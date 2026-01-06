@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journey Details - Travel Planner</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .trip-header {
+            background-color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow-sm);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        .trip-hero {
+            height: 60vh;
+            min-height: 400px;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+            margin-top: 60px;
+            /* Offset for fixed header */
+        }
+
+        .trip-hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7));
+        }
+
+        .hero-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 4rem 0;
+            color: white;
+            z-index: 2;
+        }
+
+        .main-content {
+            padding: 4rem 0;
+        }
+
+        .split-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+        }
+
+        @media (max-width: 900px) {
+            .split-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Itinerary Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            border-left: 2px solid #E5E7EB;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.6rem;
+            top: 0.5rem;
+            width: 1rem;
+            height: 1rem;
+            background: var(--primary-color);
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 0 0 1px #E5E7EB;
+        }
+
+        .timeline-date {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Checklist */
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #F3F4F6;
+            transition: all 0.2s;
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checklist-item.completed span {
+            text-decoration: line-through;
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 200;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 500px;
+            box-shadow: var(--shadow-lg);
+        }
+    </style>
+</head>
+
+<body>
+    <header class="trip-header">
+        <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
+            <a href="dashboard.html" class="logo"
+                style="color:var(--primary-color); font-weight:700; font-size:1.5rem;">TravelPlanner</a>
+            <div>
+                <a href="dashboard.html" class="btn" style="color:var(--text-muted); font-weight:500;">&larr; Back to
+                    Dashboard</a>
+            </div>
+        </div>
+    </header>
+
+    <div id="loading"
+        style="height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+        <div style="font-size: 2rem; margin-bottom: 1rem; color: var(--primary-color);">✈️</div>
+        <p style="color: var(--text-muted);">Packing your itinerary...</p>
+    </div>
+
+    <div id="trip-content" style="display:none;">
+        <div class="trip-hero">
+            <img id="trip-image" style="display:none;" /> <!-- Hidden img for easy src access if needed -->
+            <div class="hero-content">
+                <div class="container">
+                    <span id="trip-dates"
+                        style="background: rgba(255,255,255,0.2); backdrop-filter:blur(4px); padding: 5px 15px; border-radius: 20px; font-size: 0.9rem;"></span>
+                    <h1 id="trip-title"
+                        style="font-size: 4rem; margin-top: 1rem; text-shadow: 0 2px 4px rgba(0,0,0,0.3);"></h1>
+                </div>
+            </div>
+        </div>
+
+        <main class="container main-content">
+            <div class="split-layout">
+                <!-- Left Column -->
+                <div>
+                    <div class="card" style="margin-bottom: 3rem;">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:start; margin-bottom: 1.5rem;">
+                            <h2 style="font-size:1.5rem; margin:0;">About</h2>
+                            <button id="invite-btn" class="btn"
+                                style="font-size:0.9rem; color:var(--primary-color); border:1px solid var(--primary-color); padding: 0.5rem 1rem;">
+                                + Invite Collaborator
+                            </button>
+                        </div>
+                        <p id="trip-desc" style="color:var(--text-muted); line-height:1.7;"></p>
+                    </div>
+
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 2rem;">
+                        <h2 style="margin:0; font-size: 2rem;">Itinerary</h2>
+                        <button id="add-day-btn" class="btn btn-primary">+ Add Plan</button>
+                    </div>
+
+                    <div id="itinerary-timeline" class="timeline">
+                        <!-- Itinerary Items -->
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <aside>
+                    <div class="card" style="position: sticky; top: 100px;">
+                        <h3 style="margin-bottom: 1.5rem; display:flex; align-items:center; gap:0.5rem;">
+                            <span>📋</span> Packing List
+                        </h3>
+
+                        <div style="display:flex; gap:0.5rem; margin-bottom: 1.5rem;">
+                            <input type="text" id="new-item-text" placeholder="Add item..." style="flex:1;">
+                            <button id="add-item-btn" class="btn btn-primary" style="padding: 0 1rem;">+</button>
+                        </div>
+
+                        <div id="checklist-container">
+                            <!-- Checklist Items -->
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Plan Modal -->
+    <div id="itinerary-modal" class="modal">
+        <div class="modal-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                <h2 style="margin:0;">Add to Itinerary</h2>
+                <span class="close-itinerary" style="font-size:1.5rem; cursor:pointer;">&times;</span>
+            </div>
+            <form id="itinerary-form">
+                <div class="form-group" style="margin-bottom:1rem;">
+                    <label>Day / Time</label>
+                    <input type="text" id="itin-day" placeholder="e.g. Day 1, Morning" required>
+                </div>
+                <div class="form-group" style="margin-bottom:1rem;">
+                    <label>Activity</label>
+                    <input type="text" id="itin-title" placeholder="e.g. Visit Museum" required>
+                </div>
+                <div class="form-group" style="margin-bottom:1.5rem;">
+                    <label>Notes</label>
+                    <textarea id="itin-notes" rows="3" placeholder="Tickets cost $20..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">Save Activity</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="js/trip-details.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+{
+  "users": [
+    {
+      "id": "super-admin-id",
+      "username": "admin",
+      "password": "admin123",
+      "role": "admin",
+      "isSuperAdmin": true
+    },
+    {
+      "id": "1766730953302",
+      "username": "Manoj",
+      "password": "Manoj@2004",
+      "role": "user"
+    },
+    {
+      "id": "1766731293651",
+      "username": "Suresh",
+      "password": "1234568",
+      "role": "user"
+    }
+  ],
+  "content": {},
+  "trips": [
+    {
+      "id": "1767674931734",
+      "userId": "1766730953302",
+      "title": "Paris",
+      "dates": "summer 2026",
+      "image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2073&auto=format&fit=crop",
+      "description": "To the city of love",
+      "collaborators": [],
+      "createdAt": "2026-01-06T04:48:51.740Z",
+      "itinerary": []
+    }
+  ],
+  "packages": [],
+  "bookings": [],
+  "checklists": [
+    {
+      "id": "1767674963802",
+      "tripId": "1767674931734",
+      "text": "clothes",
+      "isComplete": true,
+      "createdAt": "2026-01-06T04:49:23.802Z"
+    }
+  ]
+}

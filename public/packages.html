@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Packages - Travel Planner</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/variables.css">
+    <style>
+        .pkg-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pkg-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1600');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Travel Planner</div>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="packages.html" class="active">Packages</a>
+            <a onclick="logout()">Logout</a>
+        </div>
+    </nav>
+
+    <header class="hero" style="height:40vh; min-height:300px;">
+        <div class="hero-content">
+            <h1>Explore the World</h1>
+            <p>Curated travel packages just for you.</p>
+            <button onclick="requestCustomTrip()" class="btn btn-primary"
+                style="margin-top:1rem; background:white; color:var(--primary-color);">Request Custom Trip</button>
+        </div>
+    </header>
+
+    <main class="container" style="margin-top:2rem;">
+        <div id="packages-grid" class="grid-3">
+            <!-- Packages injected here -->
+        </div>
+    </main>
+
+    <!-- Booking Modal -->
+    <div id="booking-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-booking" style="float:right; font-size:1.5rem; cursor:pointer;">&times;</span>
+            <h2 id="modal-title">Book Trip</h2>
+            <p id="modal-desc" style="color:var(--text-muted); margin-bottom:1rem;"></p>
+            <form id="booking-form">
+                <input type="hidden" id="booking-pkg-id">
+                <div class="form-group">
+                    <label>Special Requests / Notes</label>
+                    <textarea id="booking-notes" rows="4"
+                        placeholder="Dietary restrictions, flight preferences..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%;">Submit Request</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { api } from './js/api.js';
+        import { logout } from './js/auth.js';
+        window.logout = logout;
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const grid = document.getElementById('packages-grid');
+            grid.innerHTML = 'Loading packages...';
+
+            try {
+                const pkgs = await api.get('/packages');
+                if (pkgs.length === 0) {
+                    grid.innerHTML = '<p>No packages available at the moment. Check back soon!</p>';
+                    return;
+                }
+
+                grid.innerHTML = pkgs.map(p => `
+                    <div class="card pkg-card" style="padding:0; overflow:hidden;">
+                        <div style="height:200px; background:url('${p.image || 'https://via.placeholder.com/400x200?text=Travel+Package'}') center/cover;"></div>
+                        <div style="padding:1.5rem; flex:1; display:flex; flex-direction:column;">
+                            <h3 style="margin-bottom:0.5rem; color:var(--text-dark);">${p.title}</h3>
+                            <p style="color:var(--text-muted); font-size:0.95rem; margin-bottom:1rem; line-height:1.5;">${p.description}</p>
+                            <div style="margin-top:auto;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                                    <span style="background:#E0F2FE; color:var(--primary-color); padding:4px 8px; border-radius:4px; font-size:0.85rem; font-weight:600;">${p.duration}</span>
+                                    <span style="font-size:1.4rem; font-weight:700; color:var(--primary-color);">$${p.price}</span>
+                                </div>
+                                <button onclick="openBooking('${p.id}', '${p.title}')" class="btn btn-primary" style="width:100%;">Book Adventure</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                window.openBooking = (id, title) => {
+                    document.getElementById('booking-pkg-id').value = id;
+                    document.getElementById('modal-title').textContent = `Book: ${title}`;
+                    document.getElementById('booking-modal').style.display = 'block';
+                };
+
+                window.requestCustomTrip = () => {
+                    document.getElementById('booking-pkg-id').value = '';
+                    document.getElementById('modal-title').textContent = `Request Custom Trip`;
+                    document.getElementById('booking-notes').placeholder = "Tell us where you want to go, your budget, and preferences...";
+                    document.getElementById('booking-modal').style.display = 'block';
+                };
+
+            } catch (e) {
+                console.error(e);
+                grid.innerHTML = 'Error loading packages.';
+            }
+
+            // Modal Logic
+            const modal = document.getElementById('booking-modal');
+            document.querySelector('.close-booking').onclick = () => modal.style.display = 'none';
+            window.onclick = (e) => { if (e.target == modal) modal.style.display = 'none'; };
+
+            document.getElementById('booking-form').onsubmit = async (e) => {
+                e.preventDefault();
+                const pkgId = document.getElementById('booking-pkg-id').value;
+                const notes = document.getElementById('booking-notes').value;
+
+                try {
+                    await api.post('/bookings', { packageId: pkgId, customNotes: notes });
+                    alert('Booking request sent! An admin will review it shortly.');
+                    modal.style.display = 'none';
+                } catch (err) {
+                    alert('Booking failed: ' + err.message);
+                }
+            };
+        });
+    </script>
+</body>
+
+</html>

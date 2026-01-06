@@ -1,0 +1,37 @@
+:root {
+    /* -- Primary Colors (Friendly & Trustworthy) -- */
+    --primary-color: #2D9CDB;
+    /* Soft Blue */
+    --primary-hover: #2185C5;
+    --secondary-color: #F2994A;
+    /* Warm Accent */
+
+    /* -- Backgrounds -- */
+    --bg-body: #F9FAFB;
+    /* Off-white, easier on eyes than pure white */
+    --bg-card: #FFFFFF;
+    --bg-input: #F3F4F6;
+
+    /* -- Text Colors -- */
+    --text-main: #1F2937;
+    /* Dark Gray, not pure black */
+    --text-muted: #6B7280;
+    --text-light: #9CA3AF;
+
+    /* -- Status Colors -- */
+    --success: #10B981;
+    --error: #EF4444;
+    --warning: #F59E0B;
+
+    /* -- Spacing & Layout -- */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+    /* -- Typography -- */
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
