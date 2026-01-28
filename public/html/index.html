@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Planner | The World Awaits</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<!-- LONELY PLANET NAVBAR -->
+<nav class="lp-navbar">
+    <div class="lp-nav-container">
+        <a href="index.html" class="lp-brand">
+            TravelPlanner <span style="font-size:0.8rem; color:#666; font-weight:400; margin-top:5px;">.</span>
+        </a>
+        <div class="lp-nav-links">
+            <a href="packages.html" class="lp-nav-link">Destinations</a>
+            <a href="dashboard.html" class="lp-nav-link">Planning</a>
+            <a href="index.html#stories" class="lp-nav-link">Inspiration</a>
+            <a href="packages.html" class="lp-nav-link">Shop</a>
+            <button class="lp-nav-search-btn" id="nav-search-trigger"
+                style="background:none; border:none; cursor:pointer; color:var(--neutral-600); margin-left:1rem; font-size:1.1rem;">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+        <div class="lp-nav-actions">
+            <a href="login.html" class="lp-nav-link">Log In</a>
+            <a href="register.html" class="btn-lp-primary"
+                style="padding: 0.5rem 1.5rem; color:white; text-decoration:none;">Sign Up</a>
+        </div>
+    </div>
+</nav>
+
+<!-- LONELY PLANET HERO -->
+<header class="lp-hero">
+    <div class="lp-hero-overlay-box">
+        <h1 class="lp-hero-title">The World<br>Is Waiting</h1>
+
+        <div class="lp-hero-search-container">
+            <i class="fas fa-search" style="color:#666;"></i>
+            <input type="text" id="hero-search-input" class="lp-search-input"
+                placeholder="Where to next? (e.g. Kyoto, Peru)...">
+            <button id="hero-search-btn" class="btn btn-primary" style="padding: 0.5rem 1.5rem;">One Search</button>
+        </div>
+    </div>
+
+    <div class="lp-side-tab">
+        Ultimate Travel List 2026
+    </div>
+</header>
+
+<!-- LATEST STORIES SECTION (Replica Style) -->
+<section class="container mb-4 mt-4" id="stories">
+    <div class="d-flex justify-between" style="align-items: flex-end; margin-bottom: 2rem;">
+        <div>
+            <span class="card-kicker">INSPIRATION</span>
+            <h2 style="font-family: var(--font-heading); font-size: 2.5rem; margin-top: 0.5rem;">Latest Stories</h2>
+        </div>
+        <a href="#" class="btn-lp-primary"
+            style="background: white; color: var(--primary-blue); border: 1px solid #ddd;">View All Stories</a>
+    </div>
+
+    <div class="grid-cards" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+        <!-- Story 1 -->
+        <div class="card">
+            <div class="card-img-container" style="height: 240px;">
+                <img src="https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?q=80&w=1000&auto=format&fit=crop"
+                    class="card-img" alt="Venice">
+            </div>
+            <div class="card-body">
+                <span class="card-kicker" style="color: var(--primary-blue);">Art & Culture</span>
+                <h3 class="card-title" style="font-size: 1.4rem;">The Hidden Canals of Venice</h3>
+                <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">Beyond the Grand Canal lies a world of
+                    quiet waterways and local secrets.</p>
+                <div style="font-size: 0.8rem; color: #888; font-weight: 500;">By <span style="color: #333;">Elena
+                        Rossi</span> • 5 min read</div>
+            </div>
+        </div>
+
+        <!-- Story 2 -->
+        <div class="card">
+            <div class="card-img-container" style="height: 240px;">
+                <img src="https://images.unsplash.com/photo-1506929562872-bb421503ef21?q=80&w=1000&auto=format&fit=crop"
+                    class="card-img" alt="Thailand Beach">
+            </div>
+            <div class="card-body">
+                <span class="card-kicker" style="color: var(--primary-blue);">Sustainable Travel</span>
+                <h3 class="card-title" style="font-size: 1.4rem;">Eco-Friendly Havens in Thailand</h3>
+                <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">How to enjoy the islands while
+                    preserving their natural beauty for generations.</p>
+                <div style="font-size: 0.8rem; color: #888; font-weight: 500;">By <span style="color: #333;">Marcus
+                        Thorne</span> • 7 min read</div>
+            </div>
+        </div>
+
+        <!-- Story 3 -->
+        <div class="card">
+            <div class="card-img-container" style="height: 240px;">
+                <img src="https://images.unsplash.com/photo-1542259659484-cf5d61483cfd?q=80&w=1000&auto=format&fit=crop"
+                    class="card-img" alt="Japan Street">
+            </div>
+            <div class="card-body">
+                <span class="card-kicker" style="color: var(--primary-blue);">Food & Drink</span>
+                <h3 class="card-title" style="font-size: 1.4rem;">A Culinary Tour of Osaka</h3>
+                <p style="font-size: 0.9rem; color: #555; margin-bottom: 1rem;">From street markets to Michelin stars,
+                    discover the kitchen of Japan.</p>
+                <div style="font-size: 0.8rem; color: #888; font-weight: 500;">By <span style="color: #333;">Akino
+                        Miyamoto</span> • 4 min read</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SHOP BANNER (Replica Style) -->
+<section class="container mb-4">
+    <div
+        style="background: #F3F4F6; border-radius: 12px; padding: 3rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 2rem;">
+        <div style="max-width: 500px;">
+            <span class="card-kicker" style="margin-bottom: 0.5rem;">GUIDEBOOKS</span>
+            <h2 style="font-size: 2rem; margin-bottom: 1rem;">Plan Your Next Adventure with Our Guides</h2>
+            <p style="margin-bottom: 1.5rem;">Get the heart of every destination with our comprehensive guidebooks,
+                packed with hidden gems and local insights.</p>
+            <a href="#" class="btn-lp-primary">Shop Guidebooks</a>
+        </div>
+        <div style="flex: 1; min-width: 300px; display: flex; justify-content: center;">
+            <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop"
+                style="border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transform: rotate(-3deg); width: 200px; height: 280px; object-fit: cover;"
+                alt="Guidebook Cover">
+            <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=800&auto=format&fit=crop"
+                style="border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transform: rotate(5deg) translateX(-20px); width: 200px; height: 280px; object-fit: cover; z-index: 2;"
+                alt="Guidebook Cover 2">
+        </div>
+    </div>
+</section>
+
+<!-- DESTINATIONS PILLS (Replica Style) -->
+<section class="container mb-4">
+    <h3 style="font-size: 1.5rem; margin-bottom: 1.5rem;">Popular Destinations</h3>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="#"
+            style="padding: 0.5rem 1.2rem; border: 1px solid #ddd; border-radius: 99px; font-weight: 600; color: #444; transition: all 0.2s; font-size: 0.9rem;"
+            onmouseover="this.style.borderColor='#0057D9'; this.style.color='#0057D9'"
+            onmouseout="this.style.borderColor='#ddd'; this.style.color='#444'">USA</a>
+        <a href="#"
+            style="padding: 0.5rem 1.2rem; border: 1px solid #ddd; border-radius: 99px; font-weight: 600; color: #444; transition: all 0.2s; font-size: 0.9rem;"
+            onmouseover="this.style.borderColor='#0057D9'; this.style.color='#0057D9'"
+            onmouseout="this.style.borderColor='#ddd'; this.style.color='#444'">Caribbean</a>
+        <a href="#"
+            style="padding: 0.5rem 1.2rem; border: 1px solid #ddd; border-radius: 99px; font-weight: 600; color: #444; transition: all 0.2s; font-size: 0.9rem;"
+            onmouseover="this.style.borderColor='#0057D9'; this.style.color='#0057D9'"
+            onmouseout="this.style.borderColor='#ddd'; this.style.color='#444'">France</a>
+        <a href="#"
+            style="padding: 0.5rem 1.2rem; border: 1px solid #ddd; border-radius: 99px; font-weight: 600; color: #444; transition: all 0.2s; font-size: 0.9rem;"
+            onmouseover="this.style.borderColor='#0057D9'; this.style.color='#0057D9'"
+            onmouseout="this.style.borderColor='#ddd'; this.style.color='#444'">Italy</a>
+        <a href="#"
+            style="padding: 0.5rem 1.2rem; border: 1px solid #ddd; border-radius: 99px; font-weight: 600; color: #444; transition: all 0.2s; font-size: 0.9rem;"
+            onmouseover="this.style.borderColor='#0057D9'; this.style.color='#0057D9'"
+            onmouseout="this.style.borderColor='#ddd'; this.style.color='#444'">Japan</a>
+        <a href="#"
+            style="padding: 0.5rem 1.2rem; border: 1px solid #ddd; border-radius: 99px; font-weight: 600; color: #444; transition: all 0.2s; font-size: 0.9rem;"
+            onmouseover="this.style.borderColor='#0057D9'; this.style.color='#0057D9'"
+            onmouseout="this.style.borderColor='#ddd'; this.style.color='#444'">New Zealand</a>
+    </div>
+</section>
+
+<!-- LONELY PLANET FOOTER -->
+<footer class="lp-footer">
+    <div class="lp-footer-grid">
+        <div class="lp-footer-col">
+            <div class="nav-brand" style="color:white; margin-bottom:1rem;">TravelPlanner</div>
+            <p style="color:#aaa; font-size:0.9rem; margin-bottom:2rem;">Our guides. Your stories.</p>
+
+            <h4>Join our Newsletter</h4>
+            <div class="lp-newsletter-box">
+                <input type="email" placeholder="Email Address">
+                <button class="btn">Sign Up</button>
+            </div>
+
+            <div class="lp-social-icons">
+                <i class="fab fa-facebook"></i>
+                <i class="fab fa-instagram"></i>
+                <i class="fab fa-twitter"></i>
+                <i class="fab fa-pinterest"></i>
+            </div>
+        </div>
+
+        <div class="lp-footer-col">
+            <h4>Top Destinations</h4>
+            <ul class="lp-footer-links">
+                <li><a href="#">New York City</a></li>
+                <li><a href="#">Paris</a></li>
+                <li><a href="#">Italy</a></li>
+                <li><a href="#">Costa Rica</a></li>
+                <li><a href="#">Japan</a></li>
+                <li><a href="#">Amsterdam</a></li>
+            </ul>
+        </div>
+
+        <div class="lp-footer-col">
+            <h4>Travel Interests</h4>
+            <ul class="lp-footer-links">
+                <li><a href="#">Adventure Travel</a></li>
+                <li><a href="#">Art and Culture</a></li>
+                <li><a href="#">Beaches</a></li>
+                <li><a href="#">Family Holidays</a></li>
+                <li><a href="#">Food and Drink</a></li>
+                <li><a href="#">Road Trips</a></li>
+            </ul>
+        </div>
+
+        <div class="lp-footer-col">
+            <h4>About Us</h4>
+            <ul class="lp-footer-links">
+                <li><a href="#">About Travel Planner</a></li>
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms and Conditions</a></li>
+                <li><a href="#">Work For Us</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="text-center" style="color:#666; font-size:0.8rem; margin-top:2rem;">
+        &copy; 2026 TravelPlanner. All rights reserved.
+    </div>
+</footer>
+
+<!-- FontAwesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<script src="../js/main.js"></script>
+</body>
+
+</html>

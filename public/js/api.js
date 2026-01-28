@@ -1,6 +1,8 @@
-import { getAuthToken } from './auth.js';
-
 const API_BASE = 'http://localhost:3000/api';
+
+async function getAuthToken() {
+    return sessionStorage.getItem('token');
+}
 
 async function getHeaders() {
     const token = await getAuthToken();
@@ -19,8 +21,8 @@ export const api = {
             if (!response.ok) {
                 const text = await response.text();
                 if (response.status === 401 || text.includes('User not found')) {
-                    localStorage.removeItem('user');
-                    localStorage.removeItem('token');
+                    sessionStorage.removeItem('user');
+                    sessionStorage.removeItem('token');
                     window.location.href = 'login.html';
                     throw new Error("Session expired. Please login again.");
                 }
@@ -44,14 +46,23 @@ export const api = {
 
             if (!response.ok) {
                 const text = await response.text();
-                // Check for auth errors
-                if (response.status === 401 || text.includes('User not found')) {
-                    localStorage.removeItem('user');
-                    localStorage.removeItem('token');
+
+                // Don't intercept 401 for auth routes (let logic handle it)
+                if (!endpoint.includes('/auth/') && (response.status === 401 || text.includes('User not found'))) {
+                    sessionStorage.removeItem('user');
+                    sessionStorage.removeItem('token');
                     window.location.href = 'login.html';
                     throw new Error("Session expired. Please login again.");
                 }
-                throw new Error(text || response.statusText || "Request failed");
+
+                // Parse error JSON if possible
+                let errorMessage = text;
+                try {
+                    const json = JSON.parse(text);
+                    errorMessage = json.error || json.message || text;
+                } catch (e) { }
+
+                throw new Error(errorMessage || response.statusText || "Request failed");
             }
             return await response.json();
         } catch (error) {
@@ -72,8 +83,8 @@ export const api = {
             if (!response.ok) {
                 const text = await response.text();
                 if (response.status === 401 || text.includes('User not found')) {
-                    localStorage.removeItem('user');
-                    localStorage.removeItem('token');
+                    sessionStorage.removeItem('user');
+                    sessionStorage.removeItem('token');
                     window.location.href = 'login.html';
                     throw new Error("Session expired. Please login again.");
                 }
@@ -97,8 +108,8 @@ export const api = {
             if (!response.ok) {
                 const text = await response.text();
                 if (response.status === 401 || text.includes('User not found')) {
-                    localStorage.removeItem('user');
-                    localStorage.removeItem('token');
+                    sessionStorage.removeItem('user');
+                    sessionStorage.removeItem('token');
                     window.location.href = 'login.html';
                     throw new Error("Session expired. Please login again.");
                 }

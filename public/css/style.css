@@ -1,7 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;700;800&display=swap');
 @import './variables.css';
 
-/* -- Reset & Base -- */
+/* ------------------------------------------------------------------
+   RESET & BASE
+------------------------------------------------------------------ */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -9,82 +11,1031 @@
 }
 
 body {
-    font-family: var(--font-sans);
-    background-color: var(--bg-body);
-    color: var(--text-main);
-    line-height: 1.5;
+    font-family: var(--font-body);
+    background-color: var(--neutral-white);
+    color: var(--neutral-900);
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading);
+    color: var(--neutral-900);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+h3 {
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+p {
+    margin-bottom: 1rem;
+    color: var(--neutral-600);
 }
 
 a {
     text-decoration: none;
     color: inherit;
+    transition: all 0.2s;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+    height: auto;
 }
 
 ul {
     list-style: none;
 }
 
-/* -- Utilities -- */
+/* ------------------------------------------------------------------
+   UTILITIES
+------------------------------------------------------------------ */
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 2rem;
 }
 
+.text-center {
+    text-align: center;
+}
+
+.text-primary {
+    color: var(--primary-blue);
+}
+
+.text-muted {
+    color: var(--neutral-600);
+}
+
+.d-flex {
+    display: flex;
+    align-items: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.gap-1 {
+    gap: 1rem;
+}
+
+.gap-2 {
+    gap: 2rem;
+}
+
+.mb-2 {
+    margin-bottom: 2rem;
+}
+
+.mb-4 {
+    margin-bottom: 4rem;
+}
+
+.mt-2 {
+    margin-top: 2rem;
+}
+
+/* ------------------------------------------------------------------
+   COMPONENTS: BUTTONS
+------------------------------------------------------------------ */
 .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--radius-md);
+    padding: 0.8rem 2rem;
     font-weight: 600;
+    font-size: 1rem;
+    border-radius: var(--radius-pill);
     cursor: pointer;
     transition: all 0.2s ease;
     border: none;
-    font-size: 1rem;
+    outline: none;
+    gap: 0.5rem;
 }
 
 .btn-primary {
-    background-color: var(--primary-color);
+    background-color: var(--primary-blue);
     color: white;
 }
 
 .btn-primary:hover {
-    background-color: var(--primary-hover);
-    transform: translateY(-1px);
+    background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 87, 217, 0.3);
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: var(--primary-blue);
+    border: 2px solid var(--primary-blue);
+}
+
+.btn-secondary:hover {
+    background-color: rgba(0, 87, 217, 0.05);
+}
+
+.btn-white {
+    background-color: white;
+    color: var(--neutral-900);
+}
+
+.btn-white:hover {
+    background-color: var(--neutral-100);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+
+/* ------------------------------------------------------------------
+   COMPONENTS: NAVBAR
+------------------------------------------------------------------ */
+.navbar {
+    height: 80px;
+    background: white;
+    border-bottom: 1px solid var(--neutral-200);
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-brand {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--primary-blue);
+    letter-spacing: -0.03em;
+}
+
+.nav-links a {
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--neutral-600);
+    margin-left: 2rem;
+    position: relative;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: var(--primary-blue);
+}
+
+.lp-nav-search-btn:hover {
+    color: var(--primary-blue) !important;
+}
+
+/* ------------------------------------------------------------------
+   COMPONENTS: HERO SECTIONS
+------------------------------------------------------------------ */
+/* Dynamic Slider Hero */
+.hero-slider-section {
+    position: relative;
+    height: 70vh;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    overflow: hidden;
+}
+
+.hero-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    z-index: 1;
+    transition: opacity 1s ease-in-out;
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 2;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    max-width: 800px;
+    padding: 0 1rem;
+}
+
+.hero-content h1 {
+    font-size: 4rem;
+    margin-bottom: 1.5rem;
+    color: white;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.hero-content p {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 2rem;
+}
+
+/* Static Page Hero */
+.page-hero {
+    height: 50vh;
+    min-height: 400px;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+}
+
+.page-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.8) 100%);
+}
+
+.page-hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding-bottom: 3rem;
+    color: white;
+}
+
+.page-hero-content h1 {
+    color: white;
+    margin: 0;
+    font-size: 3.5rem;
+}
+
+/* ------------------------------------------------------------------
+   COMPONENTS: CARDS (Editorial Style)
+------------------------------------------------------------------ */
+/* ------------------------------------------------------------------
+   COMPONENTS: CARDS (Lonely Planet Editorial Style)
+------------------------------------------------------------------ */
+.grid-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 2rem;
 }
 
 .card {
-    background: var(--bg-card);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-sm);
-    padding: 1.5rem;
-    transition: box-shadow 0.2s;
+    background: transparent;
+    /* Clean look, let image stand out or white bg on body handle it */
+    border-radius: 0;
+    /* Square edges or very subtle radius? LP uses very subtle or none */
+    overflow: visible;
+    border: none;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
-.card:hover {
-    box-shadow: var(--shadow-md);
+.card-img-container {
+    height: 260px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    /* Slight rounded corners on image */
+    margin-bottom: 1rem;
 }
 
-/* -- Form Elements -- */
-input,
-select,
-textarea {
+.card-img {
     width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #E5E7EB;
-    border-radius: var(--radius-sm);
-    background: var(--bg-input);
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.card:hover .card-img {
+    transform: scale(1.08);
+}
+
+.card-body {
+    padding: 0;
+    /* Remove padding as it's now open layout */
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.card-kicker {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--neutral-600);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.card-title {
+    font-family: var(--font-heading, 'Playfair Display', serif);
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+    color: #111;
+}
+
+.card-desc {
+    display: none;
+    /* LP style often hides desc in grid view to focus on visual + title */
+}
+
+.card-footer {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.card-price-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.card-price-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #666;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+}
+
+.card-price-value {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #111;
+}
+
+/* LP Style Blue Pill Button */
+.btn-lp-primary {
+    background-color: var(--primary-blue);
+    color: white;
+    padding: 0.7rem 1.4rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-lp-primary:hover {
+    background-color: var(--primary-dark);
+}
+
+/* ------------------------------------------------------------------
+   COMPONENTS: FORMS & MODALS
+------------------------------------------------------------------ */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.form-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--neutral-200);
+    border-radius: var(--radius-md);
     font-family: inherit;
     font-size: 1rem;
     transition: border-color 0.2s;
+    background: var(--neutral-100);
 }
 
-input:focus,
-select:focus,
-textarea:focus {
+.form-input:focus {
     outline: none;
-    border-color: var(--primary-color);
+    border-color: var(--primary-blue);
     background: white;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    width: 90%;
+    max-width: 500px;
+    padding: 2.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-float);
+    position: relative;
+    animation: slideUp 0.3s ease-out;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--neutral-600);
+}
+
+/* ------------------------------------------------------------------
+   RESPONSIVE
+------------------------------------------------------------------ */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    .navbar {
+        padding: 0 1rem;
+    }
+
+    .nav-links {
+        display: none;
+    }
+
+    /* Simplified for mobile */
+    .grid-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ------------------------------------------------------------------
+   AUTH PAGES: PIXEL-PERFECT CLONE
+------------------------------------------------------------------ */
+.auth-clone-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    /* Changed from -1 to 1 to ensure visibility and interaction */
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    min-height: 100vh;
+    /* Ensure full height */
+}
+
+/* New Wrapper for Profile Setup */
+.auth-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    z-index: 10;
+}
+
+.auth-clone-card {
+    background: white;
+    width: 100%;
+    max-width: 850px;
+    height: 550px;
+    border-radius: 30px;
+    display: flex;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+    animation: zoomIn 0.6s ease-out;
+}
+
+.clone-sidebar {
+    width: 45%;
+    position: relative;
+    padding: 1rem;
+    display: flex;
+}
+
+.clone-image-container {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+    background: #000;
+}
+
+.clone-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.9;
+}
+
+.clone-logo {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 2.5rem;
+    z-index: 10;
+}
+
+.clone-form-area {
+    width: 55%;
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+
+.clone-back-btn {
+    position: absolute;
+    top: 1.5rem;
+    right: 2rem;
+    font-size: 1.3rem;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 20;
+}
+
+.clone-back-btn:hover {
+    color: black;
+    transform: translateX(-3px);
+}
+
+.clone-title {
+    font-family: var(--font-heading, "Playfair Display", serif);
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #111;
+}
+
+.clone-subtitle {
+    margin-bottom: 2.5rem;
+    color: #666;
+    font-size: 1rem;
+}
+
+.clone-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.clone-group {
+    margin-bottom: 1.2rem;
+    flex: 1;
+}
+
+.clone-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.clone-input {
+    width: 100%;
+    padding: 0.9rem 1.5rem;
+    background: #F3F4F6;
+    /* Light Gray */
+    border: 1px solid transparent;
+    border-radius: 999px;
+    /* Pill */
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.clone-input:focus {
+    background: white;
+    border-color: #ddd;
+    box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+}
+
+.clone-btn-primary {
+    width: 100%;
+    background: black;
+    color: white;
+    padding: 1rem;
+    border-radius: 999px;
+    font-family: var(--font-body, "Inter", sans-serif);
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    margin-top: 1rem;
+    font-size: 1rem;
+    transition: transform 0.2s;
+}
+
+.clone-btn-primary:active {
+    transform: scale(0.98);
+}
+
+.clone-divider {
+    text-align: center;
+    margin: 1.5rem 0;
+    color: #999;
+    font-size: 0.85rem;
+    position: relative;
+}
+
+.clone-divider::before,
+.clone-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: #eee;
+}
+
+.clone-divider::before {
+    left: 0;
+}
+
+.clone-divider::after {
+    right: 0;
+}
+
+.social-btns {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 999px;
+    background: white;
+    color: #444;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 0.9rem;
+}
+
+.social-btn:hover {
+    background: #f9f9f9;
+}
+
+@media (max-width: 900px) {
+    .auth-clone-card {
+        flex-direction: column;
+        height: auto;
+        max-width: 500px;
+        padding: 1rem;
+        border-radius: 20px;
+    }
+
+    .clone-sidebar {
+        display: none;
+    }
+
+    .clone-form-area {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .clone-back-btn {
+        top: 1rem;
+        left: 1rem;
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Cinematic Background for Profile Setup */
+.cinematic-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    /* Behind everything */
+    background-size: cover;
+    background-position: center;
+    transition: background-image 1s ease-in-out;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: var(--radius-md);
+    padding: 3rem;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+
+/* ------------------------------------------------------------------
+   LONELY PLANET NAVBAR
+------------------------------------------------------------------ */
+.lp-navbar {
+    background: white;
+    padding: 1rem 0;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.lp-nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.lp-brand {
+    font-family: var(--font-heading);
+    /* Playfair Display */
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--primary-dark);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.lp-nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.lp-nav-link {
+    font-family: var(--font-body);
+    /* Inter */
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.lp-nav-link:hover {
+    color: var(--primary-blue);
+}
+
+.lp-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.lp-btn-outline {
+    border: 1px solid #ddd;
+    padding: 0.5rem 1.2rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #333;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.lp-btn-outline:hover {
+    border-color: #333;
+}
+
+/* ------------------------------------------------------------------
+   LONELY PLANET HERO SECTION
+------------------------------------------------------------------ */
+.lp-hero {
+    position: relative;
+    height: 85vh;
+    min-height: 600px;
+    background-size: cover;
+    background-position: center;
+    background-image: url('https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?q=80&w=2070&auto=format&fit=crop');
+    /* Tropical Palm BG */
+    display: flex;
+    align-items: center;
+    padding-left: 5%;
+    /* Align somewhat left */
+}
+
+.lp-hero-overlay-box {
+    background-color: #0057D9;
+    /* Bright LP Blue */
+    padding: 3rem 4rem;
+    max-width: 800px;
+    position: relative;
+    z-index: 2;
+    color: white;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.lp-hero-title {
+    font-family: 'Impact', 'Arial Black', sans-serif;
+    /* Condensed bold look */
+    font-size: 5rem;
+    line-height: 0.9;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+.lp-hero-search-container {
+    background: white;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.lp-search-input {
+    border: none;
+    font-size: 1.1rem;
+    flex: 1;
+    outline: none;
+    font-family: var(--font-body);
+    color: #333;
+}
+
+/* Yellow Side Tab */
+.lp-side-tab {
+    position: absolute;
+    right: 5%;
+    top: 20%;
+    background: #FFD200;
+    /* LP Yellow */
+    padding: 1rem 0.5rem;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.9rem;
+    box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.lp-side-tab:hover {
+    transform: translateX(-5px);
+}
+
+/* ------------------------------------------------------------------
+   LONELY PLANET FOOTER
+------------------------------------------------------------------ */
+.lp-footer {
+    background-color: #1a1a1a;
+    color: white;
+    padding: 4rem 2rem 2rem;
+    margin-top: 4rem;
+}
+
+.lp-footer-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid #333;
+}
+
+.lp-footer-col h4 {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+    color: #fff;
+}
+
+.lp-footer-links li {
+    margin-bottom: 0.8rem;
+}
+
+.lp-footer-links a {
+    color: #aaa;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.lp-footer-links a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+.lp-newsletter-box input {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: none;
+    background: #333;
+    color: white;
+}
+
+.lp-newsletter-box .btn {
+    width: 100%;
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+}
+
+.lp-newsletter-box .btn:hover {
+    background: white;
+    color: black;
+}
+
+.lp-social-icons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    font-size: 1.2rem;
+}
+
+.lp-social-icons i {
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.lp-social-icons i:hover {
+    color: var(--primary-blue);
 }

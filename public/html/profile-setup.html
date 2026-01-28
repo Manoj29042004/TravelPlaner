@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Profile - Travel Planner</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+    <!-- Cinematic Background -->
+    <div class="cinematic-bg" id="bg-slider"></div>
+
+    <div class="auth-wrapper">
+        <div class="glass-card">
+            <div class="text-center mb-4">
+                <h2
+                    style="font-family: var(--font-heading); color: var(--primary-blue); font-weight: 800; margin-bottom: 0.5rem; font-size: 2rem;">
+                    Welcome Aboard!</h2>
+                <p style="color: var(--neutral-600);">Let's personalize your experience.</p>
+            </div>
+
+            <form id="profile-form">
+                <div class="form-group">
+                    <label class="form-label" style="margin-left: 0.25rem;">Profile Picture URL</label>
+                    <input type="url" id="avatar" class="form-input glass-input" placeholder="https://..."
+                        style="background: rgba(255,255,255,0.8) !important;">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" style="margin-left: 0.25rem;">Bio</label>
+                    <textarea id="bio" class="form-input glass-input" rows="3"
+                        placeholder="Tell us about your travel style..."
+                        style="background: rgba(255,255,255,0.8) !important;"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" style="margin-left: 0.25rem;">Dream Destination</label>
+                    <input type="text" id="dream-dest" class="form-input glass-input" placeholder="e.g. Kyoto, Japan"
+                        style="background: rgba(255,255,255,0.8) !important;">
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <a href="dashboard.html" class="btn btn-secondary"
+                        style="flex: 1; justify-content: center; backdrop-filter: blur(5px); background: rgba(255,255,255,0.4); border-color: transparent; color: var(--neutral-600);">Skip</a>
+                    <button type="submit" class="btn btn-primary"
+                        style="flex: 1; box-shadow: 0 4px 15px rgba(0, 87, 217, 0.4);">Save Profile</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Rotation Script -->
+    <script>
+        const images = [
+            'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2021&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop',
+            'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=2073&auto=format&fit=crop'
+        ];
+        let idx = 0;
+        const bg = document.getElementById('bg-slider');
+
+        setInterval(() => {
+            idx = (idx + 1) % images.length;
+            bg.style.backgroundImage = `url('${images[idx]}')`;
+        }, 5000);
+    </script>
+    <script type="module">
+        import { api } from '../js/api.js';
+
+        document.getElementById('profile-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Saving...';
+            btn.disabled = true;
+
+            const avatar = document.getElementById('avatar').value;
+            const bio = document.getElementById('bio').value;
+            const dreamDest = document.getElementById('dream-dest').value;
+
+            try {
+                await api.put('/auth/me', {
+                    avatar,
+                    bio,
+                    dreamDestination: dreamDest
+                });
+                // Redirect on success
+                window.location.href = 'dashboard.html';
+            } catch (error) {
+                alert('Failed to save profile: ' + error.message);
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>

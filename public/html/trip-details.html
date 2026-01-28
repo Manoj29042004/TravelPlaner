@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Details | Travel Planner</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /* Cover Story Hero */
+        .trip-header-bg {
+            height: 60vh;
+            position: relative;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .trip-header-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.8) 100%);
+        }
+
+        .trip-header-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 4rem 0;
+            z-index: 2;
+            color: white;
+        }
+
+        /* Sticky Sub-nav */
+        .sticky-toolbar {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 40;
+            border-bottom: 1px solid var(--neutral-200);
+            padding: 1rem 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Layout */
+        .trip-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 4rem;
+            margin-top: 3rem;
+        }
+
+        @media(max-width: 900px) {
+            .trip-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Timeline Styles */
+        .timeline {
+            border-left: 2px solid var(--neutral-200);
+            padding-left: 2rem;
+            margin-left: 1rem;
+        }
+
+        .timeline-card {
+            position: relative;
+            margin-bottom: 3rem;
+        }
+
+        .timeline-card::before {
+            content: '';
+            position: absolute;
+            left: -2.6rem;
+            top: 0.5rem;
+            width: 1rem;
+            height: 1rem;
+            background: var(--primary-blue);
+            border: 4px solid white;
+            border-radius: 50%;
+            box-shadow: 0 0 0 1px var(--neutral-200);
+        }
+
+        /* Checklist Styles */
+        .checklist-item {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            padding: 1rem;
+            background: white;
+            border: 1px solid var(--neutral-200);
+            border-radius: var(--radius-md);
+            margin-bottom: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .checklist-item:hover {
+            transform: translateX(5px);
+            border-color: var(--primary-blue);
+        }
+
+        .checklist-item.completed {
+            opacity: 0.6;
+            text-decoration: line-through;
+        }
+
+        .check-circle {
+            min-width: 24px;
+            height: 24px;
+            border: 2px solid var(--neutral-200);
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .check-circle.checked {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        /* Collab Avatars */
+        .avatar-pile {
+            display: flex;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--neutral-200);
+            border: 2px solid white;
+            margin-left: -10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: var(--neutral-600);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Nav -->
+    <nav class="navbar"
+        style="position: absolute; top: 0; width: 100%; background: transparent; border: none; z-index: 50;">
+        <div class="container d-flex justify-between">
+            <a href="dashboard.html" class="nav-brand"
+                style="color: white; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">TravelPlanner.</a>
+            <a href="dashboard.html" class="btn btn-white" style="padding: 0.5rem 1.5rem; font-size: 0.9rem;">&larr;
+                Dashboard</a>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="trip-header-bg" id="hero-bg"
+        style="background-image: url('https://source.unsplash.com/1600x900/?travel');">
+        <div class="container trip-header-content">
+            <span class="text-primary"
+                style="background: white; padding: 0.25rem 0.75rem; border-radius: 50px; font-weight: 700; font-size: 0.8rem; margin-bottom: 1rem; display: inline-block;">TRIP
+                ITINERARY</span>
+            <h1 id="trip-title" style="color: white; margin-bottom: 0.5rem;">Loading Journey...</h1>
+            <p id="trip-dates" style="color: rgba(255,255,255,0.9); font-size: 1.25rem;">...</p>
+        </div>
+    </header>
+
+    <!-- Toolbar -->
+    <div class="sticky-toolbar">
+        <div class="container d-flex justify-between">
+            <div class="d-flex gap-2">
+                <a href="#" class="text-primary font-bold">Itinerary</a>
+                <a href="#" class="text-muted">Budget</a>
+                <a href="#" class="text-muted">Map</a>
+            </div>
+
+            <!-- Collaboration Trigger -->
+            <div class="d-flex gap-1" id="collab-section">
+                <div class="avatar-pile" id="collab-avatars">
+                    <!-- Injected -->
+                    <div class="avatar" style="margin:0;">+</div>
+                </div>
+                <button class="btn btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.8rem;"
+                    onclick="document.getElementById('share-modal').style.display='flex'">+ Invite</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container trip-grid mb-4">
+
+        <!-- Left: Itinerary -->
+        <section>
+            <div class="d-flex justify-between mb-2">
+                <h2>Itinerary</h2>
+                <button class="btn btn-primary" id="add-day-btn">+ Add Activity</button>
+            </div>
+
+            <div class="timeline" id="itinerary-timeline">
+                <!-- JS Injected -->
+            </div>
+        </section>
+
+        <!-- Right: Checklist & Notes -->
+        <aside>
+            <div class="card" style="padding: 1.5rem; border: none; background: var(--neutral-100);">
+                <div class="d-flex justify-between mb-2">
+                    <h3 style="font-size: 1.5rem; margin: 0;">Checklist</h3>
+                </div>
+
+                <div class="d-flex gap-1 mb-2">
+                    <input type="text" id="new-item-text" class="form-input" placeholder="Add item..."
+                        style="font-size:0.9rem; padding:0.5rem;">
+                    <button id="add-item-btn" class="btn btn-secondary" style="padding: 0 1rem;">+</button>
+                </div>
+
+                <div id="checklist-container">
+                    <!-- Injected via JS -->
+                    <p class="text-muted text-center" style="font-size: 0.9rem;">No items yet.</p>
+                </div>
+            </div>
+
+            <div class="card mt-2" style="padding: 1.5rem; border: none; background: #FFF8E1;">
+                <h3 style="font-size: 1.25rem; color: #B7791F;">Trip Notes</h3>
+                <p id="trip-desc" style="font-size: 0.95rem;">...</p>
+            </div>
+        </aside>
+
+    </main>
+
+    <!-- Invite Modal -->
+    <div id="invite-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close close-invite"
+                onclick="document.getElementById('invite-modal').style.display='none'">&times;</button>
+            <h2>Invite Friends</h2>
+            <p>Plan this trip together.</p>
+            <form id="invite-form">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" id="invite-username" class="form-input" placeholder="username" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Send Invitation</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Itinerary Modal (New) -->
+    <div id="itinerary-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close close-itinerary"
+                onclick="document.getElementById('itinerary-modal').style.display='none'">&times;</button>
+            <h2>Add Activity</h2>
+            <form id="itinerary-form">
+                <div class="form-group">
+                    <label class="form-label">Day / Time</label>
+                    <input type="text" id="itin-day" class="form-input" placeholder="e.g. Day 1, 10:00 AM" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Activity Title</label>
+                    <input type="text" id="itin-title" class="form-input" placeholder="e.g. Visit Louvre Museum"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Notes</label>
+                    <textarea id="itin-notes" class="form-input" rows="2" placeholder="Optional details..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Save Activity</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="../js/trip-details.js"></script>
+</body>
+
+</html>

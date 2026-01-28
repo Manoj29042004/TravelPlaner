@@ -1,37 +1,38 @@
 :root {
-    /* -- Primary Colors (Friendly & Trustworthy) -- */
-    --primary-color: #2D9CDB;
-    /* Soft Blue */
-    --primary-hover: #2185C5;
-    --secondary-color: #F2994A;
-    /* Warm Accent */
+    /* -- Brand Colors -- */
+    --primary-blue: #0057D9;
+    /* Lonely Planet Blue equivalent */
+    --primary-dark: #0041A3;
+    --accent-gold: #FFC107;
+    /* Subtle highlight/stars */
 
-    /* -- Backgrounds -- */
-    --bg-body: #F9FAFB;
-    /* Off-white, easier on eyes than pure white */
-    --bg-card: #FFFFFF;
-    --bg-input: #F3F4F6;
+    /* -- Neutrals -- */
+    --neutral-white: #FFFFFF;
+    --neutral-100: #F8F9FA;
+    /* Lightest Gray (Backgrounds) */
+    --neutral-200: #E9ECEF;
+    /* Borders */
+    --neutral-600: #6C757D;
+    /* Muted Text */
+    --neutral-900: #212529;
+    /* Main Text (Soft Black) */
 
-    /* -- Text Colors -- */
-    --text-main: #1F2937;
-    /* Dark Gray, not pure black */
-    --text-muted: #6B7280;
-    --text-light: #9CA3AF;
-
-    /* -- Status Colors -- */
-    --success: #10B981;
-    --error: #EF4444;
-    --warning: #F59E0B;
-
-    /* -- Spacing & Layout -- */
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 20px;
-
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    /* -- Functional -- */
+    --success: #198754;
+    --warning: #FD7E14;
+    --danger: #DC3545;
 
     /* -- Typography -- */
-    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-heading: 'Playfair Display', Georgia, serif;
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+    /* -- Spacing & Shape -- */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-pill: 50px;
+
+    /* -- Shadows -- */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-float: 0 10px 30px rgba(0, 0, 0, 0.12);
 }

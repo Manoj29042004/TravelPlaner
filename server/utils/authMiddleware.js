@@ -33,14 +33,13 @@ async function isAuthenticated(req, res, next) {
     }
 }
 
+
 function isAdmin(req, res, next) {
-    if (!req.user) {
-        return res.status(401).json({ error: 'Unauthorized: No user found' });
+    if (req.user && (req.user.role === 'admin' || req.user.isSuperAdmin)) {
+        next();
+    } else {
+        res.status(403).json({ error: 'Admin access required' });
     }
-    if (req.user.role !== 'admin') {
-        return res.status(403).json({ error: 'Forbidden: Admin access required' });
-    }
-    next();
 }
 
 module.exports = { isAuthenticated, isAdmin };

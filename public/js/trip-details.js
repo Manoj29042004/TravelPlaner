@@ -12,30 +12,50 @@ if (!tripId) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // invite logic
+    // -----------------------------------------------------------
+    // Select Elements
+    // -----------------------------------------------------------
     const inviteBtn = document.getElementById('invite-btn');
-    if (inviteBtn) {
-        inviteBtn.addEventListener('click', async () => {
-            const username = prompt('Enter username to invite:');
-            if (!username) return;
-            try {
-                await api.post(`/trips/${tripId}/collaborators`, { username });
-                alert(`${username} has been invited!`);
-            } catch (error) {
-                alert('Error: ' + error.message);
-            }
-        });
-    }
+    const inviteModal = document.getElementById('invite-modal');
+    const closeInvite = document.querySelector('.close-invite');
 
-    // Itinerary Modal Logic
     const itinModal = document.getElementById('itinerary-modal');
     const addDayBtn = document.getElementById('add-day-btn');
     const closeItin = document.querySelector('.close-itinerary');
 
+    // -----------------------------------------------------------
+    // Event Listeners
+    // -----------------------------------------------------------
+
+    // Open Modals
+    if (inviteBtn) inviteBtn.onclick = () => inviteModal.style.display = "block";
     if (addDayBtn) addDayBtn.onclick = () => itinModal.style.display = "block";
+
+    // Close Modals (X buttons)
+    if (closeInvite) closeInvite.onclick = () => inviteModal.style.display = "none";
     if (closeItin) closeItin.onclick = () => itinModal.style.display = "none";
+
+    // Close Modals (Click Outside)
     window.onclick = (event) => {
+        if (event.target == inviteModal) inviteModal.style.display = "none";
         if (event.target == itinModal) itinModal.style.display = "none";
+    }
+
+    // Invite Form Submit
+    const inviteForm = document.getElementById('invite-form');
+    if (inviteForm) {
+        inviteForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('invite-username').value;
+            try {
+                await api.post(`/trips/${tripId}/collaborators`, { username });
+                alert(`${username} has been invited!`);
+                inviteModal.style.display = "none";
+                e.target.reset();
+            } catch (error) {
+                alert('Error: ' + error.message);
+            }
+        });
     }
 
     // Add Itinerary Item
@@ -87,8 +107,8 @@ async function loadTripDetails() {
         }
 
         // Show Content
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('trip-content').style.display = 'block';
+        // document.getElementById('loading').style.display = 'none';
+        // document.getElementById('trip-content').style.display = 'block';
 
         loadChecklist();
         renderItinerary(trip.itinerary || []);
@@ -137,15 +157,31 @@ async function loadChecklist() {
             <div class="checklist-item ${item.isComplete ? 'completed' : ''}">
                 <input type="checkbox" ${item.isComplete ? 'checked' : ''} onchange="toggleItem('${item.id}', ${!item.isComplete})" style="width:18px; height:18px; cursor:pointer;">
                 <span style="flex:1;">${item.text}</span>
-                <button onclick="deleteItem('${item.id}')" style="background:none; border:none; color: #EF4444; opacity:0.5; cursor:pointer; font-size:1.2rem;">&times;</button>
+                <div style="display:flex; gap:0.5rem;">
+                    <button onclick="editItem('${item.id}', '${item.text.replace(/'/g, "\\'")}')" style="background:none; border:none; color: var(--text-muted); cursor:pointer; font-size:1rem;">✏️</button>
+                    <button onclick="deleteItem('${item.id}')" style="background:none; border:none; color: #EF4444; opacity:0.5; cursor:pointer; font-size:1.2rem;">&times;</button>
+                </div>
             </div>
         `).join('');
 
         // Expose to window for inline onclicks
         window.toggleItem = toggleItem;
         window.deleteItem = deleteItem;
+        window.editItem = editItem;
     } catch (error) {
         console.error('Checklist Load Error:', error);
+    }
+}
+
+async function editItem(id, oldText) {
+    const newText = prompt("Edit item:", oldText);
+    if (newText && newText !== oldText) {
+        try {
+            await api.put(`/checklists/${id}`, { text: newText });
+            loadChecklist();
+        } catch (error) {
+            alert('Failed to update item');
+        }
     }
 }
 

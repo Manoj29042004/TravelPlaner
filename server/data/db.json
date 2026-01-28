@@ -3,6 +3,7 @@
     {
       "id": "super-admin-id",
       "username": "admin",
+      "email": "admin@travel.com",
       "password": "admin123",
       "role": "admin",
       "isSuperAdmin": true
@@ -10,6 +11,7 @@
     {
       "id": "1766730953302",
       "username": "Manoj",
+      "email": "manoj@gmail.com",
       "password": "Manoj@2004",
       "role": "user"
     },
@@ -18,31 +20,395 @@
       "username": "Suresh",
       "password": "1234568",
       "role": "user"
+    },
+    {
+      "id": "1769159562677",
+      "username": "Kishore",
+      "password": "12345678",
+      "role": "user"
+    },
+    {
+      "id": "1769249541132",
+      "username": "User23942",
+      "password": "password123",
+      "role": "user"
+    },
+    {
+      "id": "1769422788755",
+      "username": "sairam828",
+      "password": "12345",
+      "role": "user"
     }
   ],
   "content": {},
   "trips": [
     {
-      "id": "1767674931734",
-      "userId": "1766730953302",
-      "title": "Paris",
-      "dates": "summer 2026",
-      "image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2073&auto=format&fit=crop",
-      "description": "To the city of love",
+      "id": "1769159672036",
+      "userId": "1769159562677",
+      "title": "Aurora & Ice: The 2026 Nordic Expedition",
+      "dates": "Dates TBD",
+      "image": "data:image/jpeg;base64,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",
+      "description": "Experience the raw power of nature in 2026 with an exclusive winter journey through Iceland’s volcanic landscapes. This premium package includes stays in luxury eco-lodges specifically designed for viewing the Northern Lights away from city light pollution.",
       "collaborators": [],
-      "createdAt": "2026-01-06T04:48:51.740Z",
+      "createdAt": "2026-01-23T09:14:32.036Z",
+      "itinerary": [
+        {
+          "day": "Day 1",
+          "title": "Northern Lights hunting",
+          "notes": "Included in package"
+        },
+        {
+          "day": "Day 2",
+          "title": "Blue Lagoon thermal soak",
+          "notes": "Included in package"
+        },
+        {
+          "day": "Day 3",
+          "title": "Glacier hiking",
+          "notes": "Included in package"
+        },
+        {
+          "day": "Day 4",
+          "title": "Black sand beach exploration",
+          "notes": "Included in package"
+        },
+        {
+          "day": "Day 5",
+          "title": "Golden Circle private tour",
+          "notes": "Included in package"
+        },
+        {
+          "day": "Day 6",
+          "title": "Ice cave photography.",
+          "notes": "Included in package"
+        }
+      ]
+    },
+    {
+      "id": "1769249590327",
+      "userId": "1769249541132",
+      "title": "Test Trip",
+      "dates": "2024",
+      "image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34",
+      "description": "Testing the trip planning feature.",
+      "collaborators": [],
+      "createdAt": "2026-01-24T10:13:10.327Z",
+      "itinerary": []
+    },
+    {
+      "id": "1769595065243-trip",
+      "userId": "1766730953302",
+      "title": "Machu Picchu Inca Trail",
+      "dates": "Dates TBD",
+      "image": "https://images.unsplash.com/photo-1587595431973-160d0d94add1?auto=format&fit=crop&w=1000&q=80",
+      "description": "Guided trek along the mystic Inca Trail. Sunrise at the Sun Gate over Machu Picchu.",
+      "collaborators": [],
+      "createdAt": "2026-01-28T10:11:05.243Z",
       "itinerary": []
     }
   ],
-  "packages": [],
-  "bookings": [],
-  "checklists": [
+  "packages": [
     {
-      "id": "1767674963802",
-      "tripId": "1767674931734",
-      "text": "clothes",
-      "isComplete": true,
-      "createdAt": "2026-01-06T04:49:23.802Z"
+      "id": "pkg-001",
+      "title": "Kyoto Cherry Blossom Drift",
+      "destination": "Kyoto, Japan",
+      "price": 3200,
+      "duration": "7 Days",
+      "description": "Walk through the philosopher's path under blooming sakura. Includes private tea ceremony and kaiseki dining.",
+      "image": "https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=1000&q=80",
+      "createdAt": "2026-01-26T10:00:00.000Z"
+    },
+    {
+      "id": "pkg-002",
+      "title": "Santorini Sunsets & Sails",
+      "destination": "Santorini, Greece",
+      "price": 2800,
+      "duration": "5 Days",
+      "description": "Stay in a cliffside cave hotel in Oia. Catamaran cruise around the caldera included.",
+      "image": "https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=1000&q=80",
+      "createdAt": "2026-01-26T10:00:00.000Z"
+    },
+    {
+      "id": "pkg-003",
+      "title": "Swiss Alps Ski Retreat",
+      "destination": "Zermatt, Switzerland",
+      "price": 4500,
+      "duration": "6 Days",
+      "description": "World-class skiing beneath the Matterhorn. Luxury chalet accommodation with spa access.",
+      "image": "https://images.unsplash.com/photo-1552353617-38747b85e05c?auto=format&fit=crop&w=1000&q=80",
+      "createdAt": "2026-01-26T10:00:00.000Z"
+    },
+    {
+      "id": "pkg-004",
+      "title": "Machu Picchu Inca Trail",
+      "destination": "Cusco, Peru",
+      "price": 2100,
+      "duration": "8 Days",
+      "description": "Guided trek along the mystic Inca Trail. Sunrise at the Sun Gate over Machu Picchu.",
+      "image": "https://images.unsplash.com/photo-1587595431973-160d0d94add1?auto=format&fit=crop&w=1000&q=80",
+      "createdAt": "2026-01-26T10:00:00.000Z"
+    },
+    {
+      "id": "pkg-005",
+      "title": "Maldives Overwater Bliss",
+      "destination": "Malé Atoll, Maldives",
+      "price": 5400,
+      "duration": "5 Days",
+      "description": "Private overwater villa with direct ocean access. All-inclusive dining and snorkeling excursions.",
+      "image": "https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=1000&q=80",
+      "createdAt": "2026-01-26T10:00:00.000Z"
+    },
+    {
+      "id": "pkg-006",
+      "title": "Safari in Serengeti",
+      "destination": "Serengeti, Tanzania",
+      "price": 4100,
+      "duration": "7 Days",
+      "description": "Witness the Great Migration. Luxury tented camps and daily game drives with expert guides.",
+      "image": "https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1000&q=80",
+      "createdAt": "2026-01-26T10:00:00.000Z"
+    },
+    {
+      "id": "pkg-007",
+      "title": "New York City Lights",
+      "destination": "New York, USA",
+      "price": 1900,
+      "duration": "4 Days",
+      "description": "Stay in Manhattan. Broadway show tickets and helicopter tour over the skyline included.",
+      "image": "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=1000&q=80",
+      "createdAt": "2026-01-26T10:00:00.000Z"
+    },
+    {
+      "id": "pkg-008",
+      "title": "Amalfi Coast Road Trip",
+      "destination": "Positano, Italy",
+      "price": 2600,
+      "duration": "6 Days",
+      "description": "Drive a vintage convertible along the coast. Lemon grove tours and pasta making classes.",
+      "image": "https://images.unsplash.com/photo-1633321088355-d0f8c1eaad48?auto=format&fit=crop&w=1000&q=80",
+      "createdAt": "2026-01-26T10:00:00.000Z"
+    },
+    {
+      "id": "pkg-009",
+      "title": "Bali Spiritual Awakening",
+      "destination": "Ubud, Bali",
+      "price": 1800,
+      "duration": "8 Days",
+      "description": "Yoga retreats, rice terrace walks, and visits to water temples. Rejuvenate your soul.",
+      "image": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1000&q=80",
+      "createdAt": "2026-01-26T10:00:00.000Z"
+    },
+    {
+      "id": "pkg-010",
+      "title": "Parisian Romance",
+      "destination": "Paris, France",
+      "price": 2400,
+      "duration": "4 Days",
+      "description": "Hotel with Eiffel Tower view. Seine river cruise and Louvre skip-the-line access.",
+      "image": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=1000&q=80",
+      "createdAt": "2026-01-26T10:00:00.000Z"
+    },
+    {
+      "id": "pkg-011",
+      "title": "Banff National Park Adventure",
+      "destination": "Alberta, Canada",
+      "price": 2200,
+      "duration": "6 Days",
+      "description": "Canoe on Lake Louise. Hiking trails and wildlife spotting in the Canadian Rockies.",
+      "image": "https://images.unsplash.com/photo-1609863528735-f1b9b7120a16?auto=format&fit=crop&w=1000&q=80",
+      "createdAt": "2026-01-26T10:00:00.000Z"
+    },
+    {
+      "id": "pkg-012",
+      "title": "Dubai Desert & Luxury",
+      "destination": "Dubai, UAE",
+      "price": 3100,
+      "duration": "5 Days",
+      "description": "Desert safari with BBQ dinner. Visit the Burj Khalifa top deck and Palm Jumeirah.",
+      "image": "https://images.unsplash.com/photo-1512453979798-5ea904ac6666?auto=format&fit=crop&w=1000&q=80",
+      "createdAt": "2026-01-26T10:00:00.000Z"
+    },
+    {
+      "id": "pkg-013",
+      "title": "Great Barrier Reef Dive",
+      "destination": "Cairns, Australia",
+      "price": 2900,
+      "duration": "7 Days",
+      "description": "Liveaboard dive boat experience. Snorkel and dive in the world's largest coral reef system.",
+      "image": "https://images.unsplash.com/photo-1582967788606-a171f1080cae?auto=format&fit=crop&w=1000&q=80",
+      "createdAt": "2026-01-26T10:00:00.000Z"
+    },
+    {
+      "id": "pkg-014",
+      "title": "Cape Town & Winelands",
+      "destination": "Cape Town, South Africa",
+      "price": 2500,
+      "duration": "8 Days",
+      "description": "Table Mountain cable car. Wine tasting in Stellenbosch and penguin watching at Boulders Beach.",
+      "image": "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=1000&q=80",
+      "createdAt": "2026-01-26T10:00:00.000Z"
+    },
+    {
+      "id": "pkg-015",
+      "title": "Petra & Wadi Rum",
+      "destination": "Petra, Jordan",
+      "price": 2000,
+      "duration": "5 Days",
+      "description": "Explore the Rose City of Petra. Sleep in a Martian bubble tent under the stars in Wadi Rum.",
+      "image": "https://images.unsplash.com/photo-1575126473661-877a1dad7947?auto=format&fit=crop&w=1000&q=80",
+      "createdAt": "2026-01-26T10:00:00.000Z"
+    },
+    {
+      "id": "pkg-016",
+      "title": "Hawaii Island Hopping",
+      "destination": "Maui & Oahu, Hawaii",
+      "price": 3800,
+      "duration": "9 Days",
+      "description": "Surf lessons at Waikiki. Road to Hana drives and Haleakala sunrise viewing.",
+      "image": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80",
+      "createdAt": "2026-01-26T10:00:00.000Z"
+    },
+    {
+      "id": "pkg-017",
+      "title": "Istanbul Cultural Journey",
+      "destination": "Istanbul, Turkey",
+      "price": 1700,
+      "duration": "5 Days",
+      "description": "Visit Hagia Sophia and Blue Mosque. Grand Bazaar shopping and Bosphorus sunset cruise.",
+      "image": "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?auto=format&fit=crop&w=1000&q=80",
+      "createdAt": "2026-01-26T10:00:00.000Z"
+    },
+    {
+      "id": "pkg-018",
+      "title": "Costa Rica Eco-Adventure",
+      "destination": "Monteverde, Costa Rica",
+      "price": 2300,
+      "duration": "7 Days",
+      "description": "Ziplining through cloud forests. Sloth spotting and hot springs at Arenal Volcano.",
+      "image": "https://images.unsplash.com/photo-1519659528534-7fd733a832a0?auto=format&fit=crop&w=1000&q=80",
+      "createdAt": "2026-01-26T10:00:00.000Z"
+    },
+    {
+      "id": "pkg-019",
+      "title": "Scottish Highlands Tour",
+      "destination": "Inverness, Scotland",
+      "price": 2100,
+      "duration": "6 Days",
+      "description": "Hunt for Nessie at Loch Ness. Visit Eilean Donan Castle and whisky distilleries.",
+      "image": "https://images.unsplash.com/photo-1506377553878-7143760ca000?auto=format&fit=crop&w=1000&q=80",
+      "createdAt": "2026-01-26T10:00:00.000Z"
+    },
+    {
+      "id": "pkg-020",
+      "title": "Patagonia Trekking",
+      "destination": "Torres del Paine, Chile",
+      "price": 3600,
+      "duration": "10 Days",
+      "description": "W-Trek experience. Hike past blue glaciers, granite towers, and turquoise lakes.",
+      "image": "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1000&q=80",
+      "createdAt": "2026-01-26T10:00:00.000Z"
     }
-  ]
+  ],
+  "bookings": [
+    {
+      "id": "1769078914402",
+      "userId": "1766730953302",
+      "username": "Manoj",
+      "packageId": "1768985695358",
+      "packageTitle": "Aurora & Ice: The 2026 Nordic Expedition",
+      "status": "approved",
+      "customNotes": "",
+      "adminResponse": "Your trip is confirmed!",
+      "createdAt": "2026-01-22T10:48:34.403Z"
+    },
+    {
+      "id": "1769159591986",
+      "userId": "1769159562677",
+      "username": "Kishore",
+      "packageId": "1768985695358",
+      "packageTitle": "Aurora & Ice: The 2026 Nordic Expedition",
+      "status": "approved",
+      "customNotes": "",
+      "adminResponse": "Your trip is confirmed!",
+      "createdAt": "2026-01-23T09:13:11.986Z"
+    },
+    {
+      "id": "1769159615053",
+      "userId": "1769159562677",
+      "username": "Kishore",
+      "packageId": "1768985695358",
+      "packageTitle": "Aurora & Ice: The 2026 Nordic Expedition",
+      "status": "rejected",
+      "customNotes": "",
+      "adminResponse": "Sorry, we cannot fulfill this request.",
+      "createdAt": "2026-01-23T09:13:35.053Z"
+    },
+    {
+      "id": "1769163183364",
+      "userId": "1766730953302",
+      "username": "Manoj",
+      "packageId": null,
+      "packageTitle": "Custom Request",
+      "status": "rejected",
+      "customNotes": "ghbkj",
+      "adminResponse": "Sorry, we cannot fulfill this request.",
+      "createdAt": "2026-01-23T10:13:03.364Z"
+    },
+    {
+      "id": "1769248714027",
+      "userId": "super-admin-id",
+      "username": "admin",
+      "packageId": "1768985695358",
+      "packageTitle": "Aurora & Ice: The 2026 Nordic Expedition",
+      "status": "rejected",
+      "customNotes": "",
+      "adminResponse": "Sorry, we cannot fulfill this request.",
+      "createdAt": "2026-01-24T09:58:34.028Z"
+    },
+    {
+      "id": "1769249684690",
+      "userId": "1769249541132",
+      "username": "User23942",
+      "packageId": "1768985695358",
+      "packageTitle": "Aurora & Ice: The 2026 Nordic Expedition",
+      "status": "rejected",
+      "customNotes": "I would like a window seat and vegetarian meals.",
+      "adminResponse": "Sorry, we cannot fulfill this request.",
+      "createdAt": "2026-01-24T10:14:44.693Z"
+    },
+    {
+      "id": "1769401342250",
+      "userId": "1766730953302",
+      "username": "Manoj",
+      "packageId": "1768985695358",
+      "packageTitle": "Aurora & Ice: The 2026 Nordic Expedition",
+      "status": "rejected",
+      "customNotes": "",
+      "adminResponse": "Sorry, we cannot fulfill this request.",
+      "createdAt": "2026-01-26T04:22:22.250Z"
+    },
+    {
+      "id": "1769421996188",
+      "userId": "1766730953302",
+      "username": "Manoj",
+      "packageId": "pkg-001",
+      "packageTitle": "Kyoto Cherry Blossom Drift",
+      "status": "approved",
+      "customNotes": "",
+      "adminResponse": "Your trip has been instantly confirmed! Happy Travels.",
+      "createdAt": "2026-01-26T10:06:36.192Z"
+    },
+    {
+      "id": "1769595065234",
+      "userId": "1766730953302",
+      "username": "Manoj",
+      "packageId": "pkg-004",
+      "packageTitle": "Machu Picchu Inca Trail",
+      "status": "approved",
+      "customNotes": "",
+      "adminResponse": "Your trip has been instantly confirmed! Happy Travels.",
+      "createdAt": "2026-01-28T10:11:05.243Z"
+    }
+  ],
+  "checklists": []
 }

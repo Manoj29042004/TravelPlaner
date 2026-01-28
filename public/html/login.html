@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Travel Planner</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="auth-clone-bg">
+        <div class="auth-clone-card">
+
+            <!-- Left Sidebar -->
+            <div class="clone-sidebar">
+                <div class="clone-image-container">
+                    <div class="clone-logo"><i class="fas fa-paper-plane"></i></div>
+                    <img src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?q=80&w=2070&auto=format&fit=crop"
+                        class="clone-img" alt="Alpine Travel">
+                </div>
+            </div>
+
+            <!-- Right Form -->
+            <div class="clone-form-area">
+                <a href="index.html" class="clone-back-btn"><i class="fas fa-arrow-left"></i></a>
+
+                <h1 class="clone-title">Welcome Back</h1>
+                <p class="clone-subtitle">Don't have an account? <a href="register.html"
+                        style="color: black; font-weight: 700; text-decoration: underline;">Sign up</a></p>
+
+                <div id="error-msg" style="display: none; color: #DC2626; margin-bottom: 1rem; font-size: 0.9rem;">
+                </div>
+
+                <form id="login-form">
+                    <div class="clone-group">
+                        <label class="clone-label">Email</label>
+                        <input type="email" id="email" class="clone-input" placeholder="e.g. user@example.com" required>
+                    </div>
+
+                    <div class="clone-group">
+                        <label class="clone-label">Password</label>
+                        <div style="position: relative;">
+                            <input type="password" id="password" class="clone-input" placeholder="Enter your password"
+                                style="padding-right: 3rem;" required>
+                            <i class="far fa-eye-slash" id="toggle-pw" onclick="togglePw()"
+                                style="position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%); cursor: pointer; color: #888;"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="clone-btn-primary">Log In</button>
+
+                    <div class="clone-divider">or</div>
+
+                    <div class="social-btns">
+                        <button type="button" class="social-btn">
+                            <img src="https://img.icons8.com/color/24/000000/google-logo.png" alt="Google"> Google
+                        </button>
+                        <button type="button" class="social-btn">
+                            <img src="https://img.icons8.com/color/24/000000/facebook-new.png" alt="Facebook"> Facebook
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        window.togglePw = () => {
+            const inp = document.getElementById('password');
+            const icon = document.getElementById('toggle-pw');
+            if (inp.type === 'password') {
+                inp.type = 'text';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            } else {
+                inp.type = 'password';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            }
+        }
+    </script>
+
+    <script type="module">
+        import { login } from '../js/auth.js';
+
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const btn = e.target.querySelector('button[type="submit"]');
+
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Logging In...';
+            btn.disabled = true;
+
+            try {
+                await login(email, password);
+                window.location.href = 'dashboard.html';
+            } catch (err) {
+                document.getElementById('error-msg').textContent = err.message || "Login Failed";
+                document.getElementById('error-msg').style.display = 'block';
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>

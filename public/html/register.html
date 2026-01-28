@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - Travel Planner</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- For Icons -->
+</head>
+
+<body>
+
+    <div class="auth-clone-bg">
+        <div class="auth-clone-card">
+
+            <!-- Left Sidebar -->
+            <div class="clone-sidebar">
+                <div class="clone-image-container">
+                    <div class="clone-logo"><i class="fas fa-paper-plane"></i></div>
+                    <img src="https://images.unsplash.com/photo-1535295972055-1c762f4483e5?q=80&w=1000&auto=format&fit=crop"
+                        class="clone-img" alt="Artistic Travel">
+                </div>
+            </div>
+
+            <!-- Right Form -->
+            <div class="clone-form-area">
+                <a href="index.html" class="clone-back-btn"><i class="fas fa-arrow-left"></i></a>
+
+                <h1 class="clone-title">Create an Account</h1>
+                <p class="clone-subtitle">Already have an account? <a href="login.html"
+                        style="color: black; font-weight: 700; text-decoration: underline;">Log in</a></p>
+
+                <div id="error-msg" style="display: none; color: #DC2626; margin-bottom: 1rem; font-size: 0.9rem;">
+                </div>
+
+                <form id="register-form">
+                    <div class="clone-row">
+                        <div class="clone-group">
+                            <label class="clone-label">First Name</label>
+                            <input type="text" id="fname" class="clone-input" placeholder="John" required>
+                        </div>
+                        <div class="clone-group">
+                            <label class="clone-label">Last Name</label>
+                            <input type="text" id="lname" class="clone-input" placeholder="Doe" required>
+                        </div>
+                    </div>
+
+                    <div class="clone-group">
+                        <label class="clone-label">Email Address</label>
+                        <input type="email" id="email" class="clone-input" placeholder="john@example.com" required>
+                    </div>
+
+                    <div class="clone-group">
+                        <label class="clone-label">Password</label>
+                        <div style="position: relative;">
+                            <input type="password" id="password" class="clone-input" placeholder="Enter your password"
+                                style="padding-right: 3rem;" required>
+                            <i class="far fa-eye-slash" id="toggle-pw" onclick="togglePw()"
+                                style="position: absolute; right: 1.2rem; top: 50%; transform: translateY(-50%); cursor: pointer; color: #888;"></i>
+                        </div>
+                    </div>
+
+                    <div class="clone-group"
+                        style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem;">
+                        <input type="checkbox" id="terms" required style="accent-color: black;">
+                        <label for="terms" style="font-size: 0.8rem; color: #666; cursor: pointer;">I agree to the <b
+                                style="color:black; text-decoration: underline;">Terms & Conditions</b></label>
+                    </div>
+
+                    <button type="submit" class="clone-btn-primary">Create Account</button>
+
+                    <div class="clone-divider">or</div>
+
+                    <div class="social-btns">
+                        <button type="button" class="social-btn">
+                            <img src="https://img.icons8.com/color/24/000000/google-logo.png" alt="Google"> Continue
+                            with Google
+                        </button>
+                        <button type="button" class="social-btn">
+                            <img src="https://img.icons8.com/color/24/000000/facebook-new.png" alt="Facebook"> Facebook
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        window.togglePw = () => {
+            const inp = document.getElementById('password');
+            const icon = document.getElementById('toggle-pw');
+            if (inp.type === 'password') {
+                inp.type = 'text';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            } else {
+                inp.type = 'password';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            }
+        }
+    </script>
+
+    <script type="module">
+        import { register } from '../js/auth.js';
+
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fname = document.getElementById('fname').value;
+            const lname = document.getElementById('lname').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Combine names for username since backend expects username
+            const username = (fname + lname).toLowerCase() + Math.floor(Math.random() * 1000); // Temporary logic to match backend
+
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = 'Creating...';
+            btn.disabled = true;
+
+            try {
+                // Register using email as extra param if auth.js supports it, or just use username/password logic
+                await register(email, password, username);
+                window.location.href = 'profile-setup.html';
+            } catch (err) {
+                // Mock success if duplicate because we are generating username randomly
+                console.error(err);
+                document.getElementById('error-msg').textContent = err.message || "Registration Failed";
+                document.getElementById('error-msg').style.display = 'block';
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>

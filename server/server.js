@@ -28,30 +28,31 @@ const tripsRoutes = require('./routes/trips');
 const checklistsRoutes = require('./routes/checklists');
 const collaborationRoutes = require('./routes/collaboration');
 const authRoutes = require('./routes/auth');
-const adminRoutes = require('./routes/admin');
 
 const packagesRoutes = require('./routes/packages');
 const bookingsRoutes = require('./routes/bookings');
+const notificationsRoutes = require('./routes/notifications');
 
 // Mount Routes
 app.use('/api/trips', tripsRoutes);
 app.use('/api/checklists', checklistsRoutes);
 app.use('/api/collaboration', collaborationRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/admin', adminRoutes);
 app.use('/api/packages', packagesRoutes);
 app.use('/api/bookings', bookingsRoutes);
+app.use('/api/notifications', notificationsRoutes);
 
 // Health Check
 app.get('/health', (req, res) => {
     res.status(200).json({ status: 'OK' });
 });
 
+app.use(express.static(path.join(__dirname, '../public/html')));
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Serve Frontend for any other route (SPA)
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/index.html'));
+    res.sendFile(path.join(__dirname, '../public/html/index.html'));
 });
 
 // Start Server

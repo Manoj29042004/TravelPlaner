@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Destinations | Travel Planner</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <!-- packages.css is deprecated, using shared style.css -->
+</head>
+
+<body>
+
+    <!-- LONELY PLANET NAVBAR -->
+    <nav class="lp-navbar">
+        <div class="lp-nav-container">
+            <a href="index.html" class="lp-brand">
+                TravelPlanner <span style="font-size:0.8rem; color:#666; font-weight:400; margin-top:5px;">.</span>
+            </a>
+            <div class="lp-nav-links">
+                <a href="packages.html" class="lp-nav-link" style="color:var(--primary-blue);">Destinations</a>
+                <a href="dashboard.html" class="lp-nav-link">Planning</a>
+                <a href="index.html#stories" class="lp-nav-link">Inspiration</a>
+                <a href="packages.html" class="lp-nav-link">Shop</a>
+                <button class="lp-nav-search-btn" id="nav-search-trigger"
+                    style="background:none; border:none; cursor:pointer; color:var(--neutral-600); margin-left:1rem; font-size:1.1rem;">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="lp-nav-actions" id="nav-auth-container">
+                <!-- JS will populate -->
+                <a href="login.html" class="lp-nav-link">Log In</a>
+                <a href="register.html" class="btn-lp-primary"
+                    style="padding: 0.5rem 1.5rem; color:white; text-decoration:none;">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- LONELY PLANET HERO (Variant for Packages) -->
+    <header class="lp-hero"
+        style="height: 60vh; min-height: 400px; background-image: url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2021&auto=format&fit=crop');">
+        <div class="lp-hero-overlay-box">
+            <span class="card-kicker" style="color:white; margin-bottom:0.5rem;">CURATED JOURNEYS</span>
+            <h1 class="lp-hero-title" style="font-size: 3.5rem;">Explore The<br>World</h1>
+        </div>
+    </header>
+
+    <!-- Packages Grid -->
+    <main class="container mb-4 mt-4">
+        <div class="text-center mb-4">
+            <h2 style="font-family: var(--font-heading); font-size: 2rem;">Featured Destinations</h2>
+        </div>
+        <div id="packages-grid" class="grid-cards">
+            <!-- Injected -->
+        </div>
+    </main>
+
+    <!-- LONELY PLANET FOOTER -->
+    <footer class="lp-footer">
+        <div class="lp-footer-grid">
+            <div class="lp-footer-col">
+                <div class="nav-brand" style="color:white; margin-bottom:1rem;">TravelPlanner</div>
+                <p style="color:#aaa; font-size:0.9rem; margin-bottom:2rem;">Our guides. Your stories.</p>
+
+                <h4>Join our Newsletter</h4>
+                <div class="lp-newsletter-box">
+                    <input type="email" placeholder="Email Address">
+                    <button class="btn">Sign Up</button>
+                </div>
+
+                <div class="lp-social-icons">
+                    <i class="fab fa-facebook"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-pinterest"></i>
+                </div>
+            </div>
+
+            <div class="lp-footer-col">
+                <h4>Top Destinations</h4>
+                <ul class="lp-footer-links">
+                    <li><a href="#">New York City</a></li>
+                    <li><a href="#">Paris</a></li>
+                    <li><a href="#">Italy</a></li>
+                    <li><a href="#">Costa Rica</a></li>
+                    <li><a href="#">Japan</a></li>
+                    <li><a href="#">Amsterdam</a></li>
+                </ul>
+            </div>
+
+            <div class="lp-footer-col">
+                <h4>Travel Interests</h4>
+                <ul class="lp-footer-links">
+                    <li><a href="#">Adventure Travel</a></li>
+                    <li><a href="#">Art and Culture</a></li>
+                    <li><a href="#">Beaches</a></li>
+                    <li><a href="#">Family Holidays</a></li>
+                    <li><a href="#">Food and Drink</a></li>
+                    <li><a href="#">Road Trips</a></li>
+                </ul>
+            </div>
+
+            <div class="lp-footer-col">
+                <h4>About Us</h4>
+                <ul class="lp-footer-links">
+                    <li><a href="#">About Travel Planner</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms and Conditions</a></li>
+                    <li><a href="#">Work For Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center" style="color:#666; font-size:0.8rem; margin-top:2rem;">
+            &copy; 2026 TravelPlanner. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Booking Modal -->
+    <div id="booking-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <h2 id="modal-title" style="margin-bottom: 0.5rem; font-size: 1.75rem;">Book Trip</h2>
+            <h3 id="modal-title-text" class="text-primary" style="margin-bottom: 1.5rem; font-size: 1.25rem;"></h3>
+
+            <form id="booking-form">
+                <input type="hidden" id="booking-pkg-id">
+                <div class="form-group">
+                    <label class="form-label">Special Requests & Preferences</label>
+                    <textarea id="booking-notes" class="form-input" rows="5"
+                        placeholder="Dietary restrictions, preferred dates, etc..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Enquiry</button>
+                <p class="text-muted text-center" style="font-size: 0.85rem; margin-top: 1rem;">No payment required yet.
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Scripts -->
+    <script type="module" src="../js/packages.js"></script>
+    <script src="../js/main.js"></script>
+</body>
+
+</html>

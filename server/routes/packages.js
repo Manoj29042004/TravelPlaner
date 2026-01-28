@@ -7,6 +7,7 @@ const { readDb, writeDb } = require('../utils/db');
 router.get('/', async (req, res) => {
     try {
         const db = await readDb();
+        console.log(`[PACKAGES] GET Request - count: ${db.packages ? db.packages.length : 0}`);
         res.json(db.packages || []);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -24,7 +25,9 @@ router.post('/', isAuthenticated, isAdmin, async (req, res) => {
             price: req.body.price,
             duration: req.body.duration, // e.g., "5 Days"
             description: req.body.description,
-            image: req.body.image,
+
+            images: req.body.images || [], // Array of image URLs
+            image: req.body.image, // Keep for backward compatibility (primary image)
             activities: req.body.activities || [], // Array of strings or objects
             createdAt: new Date().toISOString()
         };
