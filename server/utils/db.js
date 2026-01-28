@@ -17,6 +17,13 @@ async function readDb() {
 }
 
 async function writeDb(data) {
+    // Ensure directory exists
+    const dir = path.dirname(DB_PATH);
+    try {
+        await fs.access(dir);
+    } catch {
+        await fs.mkdir(dir, { recursive: true });
+    }
     await fs.writeFile(DB_PATH, JSON.stringify(data, null, 2));
 }
 
