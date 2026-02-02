@@ -17,11 +17,11 @@ app.use((req, res, next) => {
 
 
 
-// Firebase Admin removed in favor of Local JSON DB
-const { readDb } = require('./utils/db');
+// Firebase Admin removed in favor of Local JSON DB (Now Migrated to MySQL)
+// const { readDb } = require('./utils/db');
 
 // Ensure DB exists
-readDb().then(() => console.log('Local Database Initialized')).catch(console.error);
+// readDb().then(() => console.log('Local Database Initialized')).catch(console.error);
 
 // API Routes
 const tripsRoutes = require('./routes/trips');

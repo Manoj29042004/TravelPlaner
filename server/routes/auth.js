@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { readDb, writeDb } = require('../utils/db');
+const pool = require('../config/db');
 const { isAuthenticated } = require('../utils/authMiddleware');
 
 // GET /api/auth/me - Verify token and get user info
@@ -21,23 +21,16 @@ router.get('/me', isAuthenticated, (req, res) => {
 // PUT /api/auth/me - Update user profile
 router.put('/me', isAuthenticated, async (req, res) => {
     try {
-        const { k } = req.body;
-        // In a real app we'd validate these fields
-        const updates = req.body;
+        const { bio, avatar, dreamDestination } = req.body;
 
-        const db = await readDb();
-        const userIndex = db.users.findIndex(u => u.id === req.user.id);
+        await pool.query(
+            'UPDATE users SET bio = ?, avatar = ?, dreamDestination = ? WHERE id = ?',
+            [bio, avatar, dreamDestination, req.user.id]
+        );
 
-        if (userIndex === -1) {
-            return res.status(404).json({ error: 'User not found' });
-        }
-
-        // Merge updates
-        const updatedUser = { ...db.users[userIndex], ...updates };
-        // Prevent strictly immutable fields from being changed if necessary (like id), but for now simple merge is fine
-
-        db.users[userIndex] = updatedUser;
-        await writeDb(db);
+        // Fetch updated user to return
+        const [rows] = await pool.query('SELECT * FROM users WHERE id = ?', [req.user.id]);
+        const updatedUser = rows[0];
 
         res.json({
             message: 'Profile updated',
@@ -61,17 +54,17 @@ router.post('/register', async (req, res) => {
     try {
         const { username, password, email } = req.body;
         if (!username || !password || !email) {
-            console.error('Missing username, password, or email');
             return res.status(400).json({ error: 'Username, email, and password are required' });
         }
 
-        const db = await readDb();
+        // Check if user exists
+        const [existing] = await pool.query(
+            'SELECT * FROM users WHERE username = ? OR email = ?',
+            [username, email]
+        );
 
-        if (db.users.find(u => u.username === username)) {
-            return res.status(400).json({ error: 'Username already exists' });
-        }
-        if (db.users.find(u => u.email === email)) {
-            return res.status(400).json({ error: 'Email already exists' });
+        if (existing.length > 0) {
+            return res.status(400).json({ error: 'Username or email already exists' });
         }
 
         const newUser = {
@@ -82,8 +75,11 @@ router.post('/register', async (req, res) => {
             role: 'user'
         };
 
-        db.users.push(newUser);
-        await writeDb(db);
+        await pool.query(
+            'INSERT INTO users (id, username, email, password, role) VALUES (?, ?, ?, ?, ?)',
+            [newUser.id, newUser.username, newUser.email, newUser.password, newUser.role]
+        );
+
         console.log('User registered:', newUser.username);
 
         res.status(201).json({ message: 'User registered successfully', user: { username: newUser.username, role: newUser.role } });
@@ -98,9 +94,13 @@ router.post('/login', async (req, res) => {
     console.log('Login request:', req.body);
     try {
         const { email, password } = req.body;
-        const db = await readDb();
 
-        const user = db.users.find(u => u.email === email && u.password === password);
+        const [rows] = await pool.query(
+            'SELECT * FROM users WHERE email = ? AND password = ?',
+            [email, password]
+        );
+
+        const user = rows[0];
 
         if (!user) {
             console.error('Login failed for:', email);

@@ -1,96 +1,108 @@
 const express = require('express');
 const router = express.Router();
+const pool = require('../config/db');
 const { isAuthenticated } = require('../utils/authMiddleware');
-const { readDb, writeDb } = require('../utils/db');
 
 // Create a booking request (User)
 router.post('/', isAuthenticated, async (req, res) => {
     try {
-        const db = await readDb();
         const { packageId, customNotes } = req.body;
         console.log(`[BOOKING] POST Request - User: ${req.user.username} (${req.user.id}) - Pkg: ${packageId}`);
 
-
-        // Logic for Custom vs Package Booking
         let packageTitle = 'Custom Request';
+        let packageDetails = null;
+
+        // Fetch Package Details if ID provided
         if (packageId) {
-            const pkg = (db.packages || []).find(p => p.id === packageId);
-            if (pkg) {
-                packageTitle = pkg.title;
-            } else {
-                // If package provided but not found, maybe just mark as custom or return error?
-                // Let's default to Custom Request if ID not found but still proceed? 
-                // Or better, return 404 if ID was explicitly sent but invalid.
-                // But for flexibility let's just proceed.
+            const [pkgRows] = await pool.query('SELECT * FROM packages WHERE id = ?', [packageId]);
+            if (pkgRows.length > 0) {
+                packageDetails = pkgRows[0];
+                packageTitle = packageDetails.title;
             }
         }
 
         const newBooking = {
             id: Date.now().toString(),
-            userId: req.user.id,
+            user_id: req.user.id,
             username: req.user.username,
-            packageId: packageId || null,
-            packageTitle,
+            package_id: packageId || null,
+            package_title: packageTitle,
             status: 'approved', // AUTO-APPROVE
-            customNotes: customNotes || '',
-            adminResponse: 'Your trip has been instantly confirmed! Happy Travels.',
-            createdAt: new Date().toISOString()
+            custom_notes: customNotes || '',
+            admin_response: 'Your trip has been instantly confirmed! Happy Travels.'
         };
 
-        if (!db.bookings) db.bookings = [];
-        db.bookings.push(newBooking);
+        // Insert Booking
+        await pool.query(
+            `INSERT INTO bookings (id, user_id, username, package_id, package_title, status, custom_notes, admin_response) 
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            [newBooking.id, newBooking.user_id, newBooking.username, newBooking.package_id, newBooking.package_title, newBooking.status, newBooking.custom_notes, newBooking.admin_response]
+        );
 
         // --- Auto-Create Trip Logic ---
-        let newTrip = null;
-        if (packageId) {
-            const pkg = (db.packages || []).find(p => p.id === packageId);
-            if (pkg) {
-                // Generate detailed itinerary if available, or simpler one
-                let tripItinerary = [];
-                if (pkg.activities && Array.isArray(pkg.activities)) {
-                    tripItinerary = pkg.activities.map((act, i) => ({
-                        day: `Day ${i + 1}`,
-                        title: act,
-                        notes: 'Included in package'
-                    }));
-                }
+        if (packageDetails) {
+            const tripId = Date.now().toString() + "-trip";
 
-                newTrip = {
-                    id: Date.now().toString() + "-trip",
-                    userId: req.user.id,
-                    title: pkg.title,
-                    dates: "Dates TBD",
-                    image: pkg.image || 'https://via.placeholder.com/800',
-                    description: pkg.description,
-                    collaborators: [],
-                    createdAt: new Date().toISOString(),
-                    itinerary: tripItinerary
-                };
+            // We need to parse activities from package if it exists as JSON
+            let tripItinerary = [];
+            if (packageDetails.activities) {
+                // It might come as a string from DB or object if mysql2 casts it
+                // Let's assume mysql2 auto-casts JSON columns if configured, strict check
+                const activities = Array.isArray(packageDetails.activities) ? packageDetails.activities : (packageDetails.activities ? JSON.parse(packageDetails.activities) : []);
+
+                tripItinerary = activities.map((act, i) => ({
+                    day: `Day ${i + 1}`,
+                    title: act,
+                    notes: 'Included in package'
+                }));
             }
+
+            await pool.query(
+                `INSERT INTO trips (id, user_id, title, destination, dates, image, description, collaborators, itinerary) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    tripId,
+                    req.user.id,
+                    packageDetails.title,
+                    "Dates TBD",
+                    packageDetails.dates || "Dates TBD", // Fallback if dates not in package
+                    packageDetails.image || 'https://via.placeholder.com/800',
+                    packageDetails.description,
+                    JSON.stringify([]),
+                    JSON.stringify(tripItinerary)
+                ]
+            );
         } else {
             // Custom Trip
-            newTrip = {
-                id: Date.now().toString() + "-trip",
-                userId: req.user.id,
-                title: "Custom Trip: " + (packageTitle === 'Custom Request' ? 'My Custom Adventure' : packageTitle),
-                dates: "Dates TBD",
-                image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&auto=format&fit=crop",
-                description: customNotes || "Custom trip request.",
-                collaborators: [],
-                createdAt: new Date().toISOString(),
-                itinerary: []
-            };
+            const tripId = Date.now().toString() + "-trip";
+            await pool.query(
+                `INSERT INTO trips (id, user_id, title, destination, dates, image, description, collaborators, itinerary) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [
+                    tripId,
+                    req.user.id,
+                    "Custom Trip: " + (packageTitle === 'Custom Request' ? 'My Custom Adventure' : packageTitle),
+                    "Dates TBD", // Destination
+                    "Dates TBD",
+                    "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=800&auto=format&fit=crop",
+                    customNotes || "Custom trip request.",
+                    JSON.stringify([]),
+                    JSON.stringify([])
+                ]
+            );
         }
 
-        if (newTrip) {
-            if (!db.trips) db.trips = [];
-            db.trips.push(newTrip);
-        }
+        res.status(201).json({
+            ...newBooking,
+            userId: newBooking.user_id,
+            packageId: newBooking.package_id,
+            packageTitle: newBooking.package_title,
+            customNotes: newBooking.custom_notes,
+            adminResponse: newBooking.admin_response
+        });
 
-        await writeDb(db);
-
-        res.status(201).json(newBooking);
     } catch (error) {
+        console.error('Create booking error:', error);
         res.status(500).json({ error: error.message });
     }
 });
@@ -98,8 +110,22 @@ router.post('/', isAuthenticated, async (req, res) => {
 // Get my bookings (User)
 router.get('/my-bookings', isAuthenticated, async (req, res) => {
     try {
-        const db = await readDb();
-        const myBookings = (db.bookings || []).filter(b => b.userId === req.user.id);
+        const [rows] = await pool.query('SELECT * FROM bookings WHERE user_id = ?', [req.user.id]);
+
+        // Map back to camelCase for frontend consistency if needed, or keeping snake_case is fine if frontend adapts.
+        // Let's map to camelCase to match previous JSON structure to minimize frontend breakage.
+        const myBookings = rows.map(b => ({
+            id: b.id,
+            userId: b.user_id,
+            username: b.username,
+            packageId: b.package_id,
+            packageTitle: b.package_title,
+            status: b.status,
+            customNotes: b.custom_notes,
+            adminResponse: b.admin_response,
+            createdAt: b.created_at
+        }));
+
         res.json(myBookings);
     } catch (error) {
         res.status(500).json({ error: error.message });

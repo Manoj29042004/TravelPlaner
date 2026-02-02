@@ -1,23 +1,32 @@
 const express = require('express');
 const router = express.Router();
+const pool = require('../config/db');
 const { isAuthenticated } = require('../utils/authMiddleware');
-const { readDb, writeDb } = require('../utils/db');
 
 // Get checklist for a specific trip
 router.get('/:tripId', isAuthenticated, async (req, res) => {
     try {
-        const db = await readDb();
-        const trip = db.trips.find(t => t.id === req.params.tripId);
+        const [tripRows] = await pool.query('SELECT * FROM trips WHERE id = ?', [req.params.tripId]);
+        const trip = tripRows[0];
 
         if (!trip) return res.status(404).json({ error: 'Trip not found' });
 
-        const hasAccess = trip.userId === req.user.id || (trip.collaborators && trip.collaborators.includes(req.user.username));
+        const collaborators = trip.collaborators || [];
+        const hasAccess = trip.user_id === req.user.id || collaborators.includes(req.user.username);
         if (!hasAccess) return res.status(403).json({ error: 'Unauthorized access to trip' });
 
-        // Checklists are stored in a separate array in db.json for scalability in this design
-        // Or could be part of trip. But keeping Separate collection pattern as per request.
-        const items = (db.checklists || []).filter(item => item.tripId === req.params.tripId);
-        res.json(items);
+        const [items] = await pool.query('SELECT * FROM checklists WHERE trip_id = ?', [req.params.tripId]);
+
+        // Map snake_case to camelCase
+        const camelitems = items.map(i => ({
+            id: i.id,
+            tripId: i.trip_id,
+            text: i.text,
+            isComplete: i.is_complete === 1,
+            createdAt: i.created_at
+        }));
+
+        res.json(camelitems);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -26,26 +35,31 @@ router.get('/:tripId', isAuthenticated, async (req, res) => {
 // Add item to checklist
 router.post('/:tripId', isAuthenticated, async (req, res) => {
     try {
-        const db = await readDb();
-        const trip = db.trips.find(t => t.id === req.params.tripId);
+        const [tripRows] = await pool.query('SELECT * FROM trips WHERE id = ?', [req.params.tripId]);
+        const trip = tripRows[0];
 
         if (!trip) return res.status(404).json({ error: 'Trip not found' });
-        const hasAccess = trip.userId === req.user.id || (trip.collaborators && trip.collaborators.includes(req.user.username));
-        if (!hasAccess) return res.status(403).json({ error: 'Unauthorized' });
 
-        if (!db.checklists) db.checklists = [];
+        const collaborators = trip.collaborators || [];
+        const hasAccess = trip.user_id === req.user.id || collaborators.includes(req.user.username);
+        if (!hasAccess) return res.status(403).json({ error: 'Unauthorized' });
 
         const newItem = {
             id: Date.now().toString(),
             tripId: req.params.tripId,
             text: req.body.text,
-            isComplete: false,
-            createdAt: new Date().toISOString()
+            isComplete: false
         };
 
-        db.checklists.push(newItem);
-        await writeDb(db);
-        res.status(201).json(newItem);
+        await pool.query(
+            'INSERT INTO checklists (id, trip_id, text, is_complete) VALUES (?, ?, ?, ?)',
+            [newItem.id, newItem.tripId, newItem.text, newItem.isComplete]
+        );
+
+        res.status(201).json({
+            ...newItem,
+            createdAt: new Date().toISOString()
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -54,23 +68,49 @@ router.post('/:tripId', isAuthenticated, async (req, res) => {
 // Toggle item complete / Update text
 router.put('/:itemId', isAuthenticated, async (req, res) => {
     try {
-        const db = await readDb();
-        if (!db.checklists) db.checklists = [];
+        const [itemRows] = await pool.query('SELECT * FROM checklists WHERE id = ?', [req.params.itemId]);
+        const item = itemRows[0];
 
-        const itemIndex = db.checklists.findIndex(i => i.id === req.params.itemId);
-        if (itemIndex === -1) return res.status(404).json({ error: 'Item not found' });
+        if (!item) return res.status(404).json({ error: 'Item not found' });
 
-        const item = db.checklists[itemIndex];
-        const trip = db.trips.find(t => t.id === item.tripId);
+        // Check Access via Trip
+        const [tripRows] = await pool.query('SELECT * FROM trips WHERE id = ?', [item.trip_id]);
+        const trip = tripRows[0];
 
-        const hasAccess = trip && (trip.userId === req.user.id || (trip.collaborators && trip.collaborators.includes(req.user.username)));
+        if (!trip) return res.status(404).json({ error: 'Trip not found' });
+
+        const collaborators = trip.collaborators || [];
+        const hasAccess = trip.user_id === req.user.id || collaborators.includes(req.user.username);
         if (!hasAccess) return res.status(403).json({ error: 'Unauthorized' });
 
-        const updatedItem = { ...item, ...req.body };
-        db.checklists[itemIndex] = updatedItem;
-        await writeDb(db);
+        // Prepare Update
+        const fields = [];
+        const values = [];
 
-        res.json(updatedItem);
+        if (req.body.text !== undefined) {
+            fields.push('text = ?');
+            values.push(req.body.text);
+        }
+        if (req.body.isComplete !== undefined) {
+            fields.push('is_complete = ?');
+            values.push(req.body.isComplete ? 1 : 0);
+        }
+
+        if (fields.length > 0) {
+            values.push(req.params.itemId);
+            await pool.query(`UPDATE checklists SET ${fields.join(', ')} WHERE id = ?`, values);
+        }
+
+        const [updatedRows] = await pool.query('SELECT * FROM checklists WHERE id = ?', [req.params.itemId]);
+        const updatedItem = updatedRows[0];
+
+        res.json({
+            id: updatedItem.id,
+            tripId: updatedItem.trip_id,
+            text: updatedItem.text,
+            isComplete: updatedItem.is_complete === 1,
+            createdAt: updatedItem.created_at
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -79,20 +119,21 @@ router.put('/:itemId', isAuthenticated, async (req, res) => {
 // Delete item
 router.delete('/:itemId', isAuthenticated, async (req, res) => {
     try {
-        const db = await readDb();
-        if (!db.checklists) db.checklists = [];
+        const [itemRows] = await pool.query('SELECT * FROM checklists WHERE id = ?', [req.params.itemId]);
+        const item = itemRows[0];
 
-        const itemIndex = db.checklists.findIndex(i => i.id === req.params.itemId);
-        if (itemIndex === -1) return res.status(404).json({ error: 'Item not found' });
+        if (!item) return res.status(404).json({ error: 'Item not found' });
 
-        const item = db.checklists[itemIndex];
-        const trip = db.trips.find(t => t.id === item.tripId);
+        // Check Access
+        const [tripRows] = await pool.query('SELECT * FROM trips WHERE id = ?', [item.trip_id]);
+        const trip = tripRows[0];
 
-        const hasAccess = trip && (trip.userId === req.user.id || (trip.collaborators && trip.collaborators.includes(req.user.username)));
+        const collaborators = trip ? (trip.collaborators || []) : [];
+        const hasAccess = trip && (trip.user_id === req.user.id || collaborators.includes(req.user.username));
+
         if (!hasAccess) return res.status(403).json({ error: 'Unauthorized' });
 
-        db.checklists.splice(itemIndex, 1);
-        await writeDb(db);
+        await pool.query('DELETE FROM checklists WHERE id = ?', [req.params.itemId]);
         res.json({ message: 'Item deleted' });
     } catch (error) {
         res.status(500).json({ error: error.message });

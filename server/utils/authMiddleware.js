@@ -1,4 +1,4 @@
-const { readDb } = require('./db');
+const pool = require('../config/db');
 
 async function isAuthenticated(req, res, next) {
     const authHeader = req.headers['authorization'];
@@ -13,8 +13,8 @@ async function isAuthenticated(req, res, next) {
         const [uid, role] = token.split(':::');
         if (!uid || !role) throw new Error('Invalid token format');
 
-        const db = await readDb();
-        const user = db.users.find(u => u.id === uid);
+        const [rows] = await pool.query('SELECT * FROM users WHERE id = ?', [uid]);
+        const user = rows[0];
 
         if (!user) {
             return res.status(401).json({ error: 'User not found' });
