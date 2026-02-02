@@ -1,51 +1,67 @@
 # Deployment Guide for Render
 
-This guide outlines the steps to deploy the Travel Planner application to [Render](https://render.com/).
+This guide outlines the steps to deploy the Travel Planner application to [Render](https://render.com/) using an **Aiven MySQL** database.
 
 ## Prerequisites
 
 1.  A [GitHub](https://github.com/) account.
 2.  A [Render](https://render.com/) account.
-3.  The project code pushed to a GitHub repository.
+3.  Your Aiven MySQL connection details (Host, Port, User, Password, DB Name).
 
-## Step 1: Push to GitHub
+## Step 1: Push to GitHub (Completed)
 
-If you haven't already, push your code to a new GitHub repository or update your existing one.
-Make sure the root of the repository contains `package.json` and the `server` folder.
+Your code is already pushed to GitHub.
 
 ## Step 2: Create a Web Service on Render
 
-1.  Log in to your Render dashboard.
+1.  Log in to your [Render Dashboard](https://dashboard.render.com/).
 2.  Click the **"New +"** button and select **"Web Service"**.
-3.  Connect your GitHub account if prompted.
-4.  Select the repository containing your Travel Planner code.
+3.  Select the repository containing your Travel Planner code (`TravelPlaner`).
 
 ## Step 3: Configure the Service
 
 Configure the following settings:
 
-*   **Name:** Choose a unique name for your app (e.g., `travel-planner-app`).
-*   **Region:** Select the region closest to you or your users (e.g., `Oregon (US West)`).
-*   **Branch:** `main` (or `master`, depending on your repo).
-*   **Root Directory:** Leave blank (defaults to repo root).
+*   **Name:** `travel-planner-app` (or any unique name).
+*   **Region:** Select the region closest to you (e.g., `Singapore` or `Oregon`).
+*   **Branch:** `master`
+*   **Root Directory:** *(Leave blank)*
 *   **Runtime:** **Node**
 *   **Build Command:** `npm install`
-*   **Start Command:** `npm start`
-*   **Instance Type:** **Free** (for hobby/testing purposes).
+*   **Start Command:** `node server/server.js`
+*   **Instance Type:** **Free**
 
-## Step 4: Deploy
+## Step 4: Environment Variables (CRITICAL)
+
+Scroll down to the **Environment Variables** section and add the following keys with your Aiven credentials:
+
+| Key | Value |
+| --- | --- |
+| `DB_HOST` | `mysql-2a44efcc-gudisevadanoj-4b81.g.aivencloud.com` |
+| `DB_PORT` | `18511` |
+| `DB_USER` | `avnadmin` |
+| `DB_PASSWORD` | *(Enter your Aiven Password)* |
+| `DB_NAME` | `defaultdb` |
+
+## Step 5: Deploy & Initialize Database
 
 1.  Click **"Create Web Service"**.
-2.  Render will start building your application. You can view the logs in the "Events" or "Logs" tab.
-3.  Once the build finishes and the service starts, you will see a green **"Live"** badge.
-4.  Your app URL will be displayed at the top (e.g., `https://travel-planner-app.onrender.com`).
+2.  Render will start building your application.
 
-> [!WARNING]
-> **Data Persistence Warning**
-> Since this application uses a local file-based database (`server/data/db.json`), **all user data (trips, checklists, etc.) will be lost** whenever the app restarts or redeploys on Render. This is a limitation of the free/ephemeral file system on cloud platforms. For permanent data storage, you would need to integrate a database service like MongoDB Atlas or Render's PostgreSQL.
+### initializing the Database (IMPORTANT)
+Since your local machine couldn't connect to the database, you **MUST** run the initialization script from Render's shell to create the tables (`users`, `trips`, etc.).
 
-## Troubleshooting
+1.  Wait for the deploy to finish (if it fails/crashes, that's okay, proceed to next step).
+2.  Click on the **Shell** tab in the Render dashboard (left sidebar).
+3.  Wait for the terminal prompt to appear.
+4.  Type and run:
+    ```bash
+    node server/scripts/initDb.js
+    ```
+5.  You should see the message: `Database initialization complete`.
+6.  If your app had crashed, go to the top right and click **Manual Deploy** -> **Restart Service**.
 
--   **Build Failed:** Check the logs for errors. Ensure `package.json` exists in the root.
--   **App Crashes:** Check the "Logs" tab. Ensure the node version is compatible (we set it to `>=18.0.0`).
--   **Data Not Saving:** Remember the warning above; data is ephemeral on the free tier.
+## Step 6: Verify
+
+Open your app's URL (e.g., `https://travel-planner-app.onrender.com`).
+Test by **Registering a new user**. If it works, you are fully live!

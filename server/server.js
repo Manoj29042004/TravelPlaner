@@ -20,8 +20,10 @@ app.use((req, res, next) => {
 // Firebase Admin removed in favor of Local JSON DB (Now Migrated to MySQL)
 // const { readDb } = require('./utils/db');
 
-// Ensure DB exists
-// readDb().then(() => console.log('Local Database Initialized')).catch(console.error);
+// Ensure DB exists / Initialize MySQL Tables
+const initDb = require('./scripts/initDb');
+
+// We will run initDb() inside app.listen or before it to ensure tables exist
 
 // API Routes
 const tripsRoutes = require('./routes/trips');
@@ -56,6 +58,15 @@ app.get('*', (req, res) => {
 });
 
 // Start Server
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+const startServer = async () => {
+    try {
+        await initDb();
+        app.listen(PORT, () => {
+            console.log(`Server is running on http://localhost:${PORT}`);
+        });
+    } catch (error) {
+        console.error('Failed to start server due to DB init error:', error);
+    }
+};
+
+startServer();

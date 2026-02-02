@@ -86,11 +86,16 @@ async function initDb() {
         console.log('Checklists table checked/created');
 
         console.log('Database initialization complete');
-        process.exit(0);
+        // process.exit(0); // Removed for auto-run in server.js
     } catch (error) {
         console.error('Error initializing database:', error);
-        process.exit(1);
+        // process.exit(1); // Removed for auto-run in server.js, let server handle error
     }
 }
 
-initDb();
+module.exports = initDb;
+
+// Only run standalone if called directly from command line
+if (require.main === module) {
+    initDb().then(() => process.exit(0)).catch(() => process.exit(1));
+}
