@@ -50,12 +50,15 @@ async function seedPackages() {
         }
 
         console.log('Packages seeded successfully!');
-        process.exit(0);
-
+        // process.exit(0);
     } catch (error) {
         console.error('Error seeding packages:', error);
-        process.exit(1);
+        // process.exit(1);
     }
 }
 
-seedPackages();
+module.exports = seedPackages;
+
+if (require.main === module) {
+    seedPackages().then(() => process.exit(0)).catch(() => process.exit(1));
+}

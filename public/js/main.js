@@ -58,3 +58,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 });
+
+    // --- Mobile Menu Toggle ---
+    const mobileMenuBtn = document.querySelector('.lp-mobile-menu-btn');
+    const mobileMenu = document.querySelector('.lp-mobile-menu');
+
+    if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('active');
+            // Toggle icon from bars to times
+            const icon = mobileMenuBtn.querySelector('i');
+            if (mobileMenu.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            } else {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        });
+    }

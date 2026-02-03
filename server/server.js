@@ -61,6 +61,10 @@ app.get('*', (req, res) => {
 const startServer = async () => {
     try {
         await initDb();
+        // Auto-seed packages if table is empty (or just update them)
+        const seedPackages = require('./scripts/seedPackages');
+        await seedPackages();
+
         app.listen(PORT, () => {
             console.log(`Server is running on http://localhost:${PORT}`);
         });

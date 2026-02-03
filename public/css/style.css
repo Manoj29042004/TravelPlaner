@@ -1039,3 +1039,47 @@ ul {
 .lp-social-icons i:hover {
     color: var(--primary-blue);
 }
+/* --- Mobile Menu --- */
+.lp-mobile-menu-btn {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--neutral-900);
+    margin-left: auto;
+}
+
+.lp-mobile-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    background: white;
+    border-bottom: 1px solid var(--neutral-200);
+    padding: 1rem 0;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.lp-mobile-menu a {
+    padding: 1rem 2rem;
+    color: var(--neutral-900);
+    border-bottom: 1px solid #f0f0f0;
+    font-weight: 500;
+}
+
+.lp-mobile-menu.active {
+    display: flex;
+}
+
+@media (max-width: 768px) {
+    .lp-nav-links, .lp-nav-actions {
+        display: none;
+    }
+    
+    .lp-mobile-menu-btn {
+        display: block;
+    }
+}
